@@ -1,4 +1,6 @@
-export const systemMessages = [
+import { IPromptExample, ISystemMessage } from "@types";
+
+export const systemMessages: ISystemMessage[] = [
   {
     id: 1,
     system:
@@ -60,7 +62,7 @@ export const systemMessages = [
   },
 ];
 
-export const promptsExamples = [
+export const promptsExamples: IPromptExample[] = [
   {
     pid: 1,
     user: "What is the chemical symbol for gold?",
