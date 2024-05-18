@@ -57,7 +57,7 @@ const SMForm: React.FC<{
       {isEditable && (
         <IconButton
           onClick={resetForm}
-          iconUrl={"/assets/delete.png"}
+          iconUrl={"assets/delete.png"}
           iconSize={15}
           classes="absolute top-0 right-0"
         />
@@ -81,14 +81,14 @@ const SMForm: React.FC<{
         <div className="w-full flex gap-4">
           <IconButton
             iconSize={15}
-            iconUrl="/assets/plus.png"
+            iconUrl="assets/plus.png"
             text="Add"
             onClick={handleFormSubmit}
             type="submit"
           />
           <IconButton
             iconSize={15}
-            iconUrl="/assets/cancel.png"
+            iconUrl="assets/cancel.png"
             text="Cancel"
             onClick={handleCancel!}
           />

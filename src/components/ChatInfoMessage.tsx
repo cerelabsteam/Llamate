@@ -3,7 +3,7 @@ const ChatInfoMessage = () => {
     <div className="w-4/5 flex p-8 bg-white shadow-lg rounded-sm m-auto gap-8">
       <div className="w-16 h-16">
         <img
-          src="/assets/robot.png"
+          src="assets/robot.png"
           alt="Chatbot"
           className="w-full h-full object-contain"
         />

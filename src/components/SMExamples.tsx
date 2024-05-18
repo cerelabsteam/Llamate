@@ -88,14 +88,14 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
         <IconButton
           iconSize={13}
           text="Previous"
-          iconUrl="/assets/arrow-left.png"
+          iconUrl="assets/arrow-left.png"
           onClick={() => handleNavButtonClick("left")}
           disabled={isNavButtonDisabled}
         />
         <IconButton
           iconSize={13}
           text="Next"
-          iconUrl="/assets/arrow-right.png"
+          iconUrl="assets/arrow-right.png"
           onClick={() => handleNavButtonClick("right")}
           disabled={isNavButtonDisabled}
           classes="flex-row-reverse"
@@ -112,7 +112,7 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
       ) : (
         <IconButton
           iconSize={15}
-          iconUrl="/assets/plus.png"
+          iconUrl="assets/plus.png"
           onClick={() => setIsAddButtonOn((prev) => !prev)}
           text="Add Example"
           classes="w-3/5"

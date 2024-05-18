@@ -9,7 +9,7 @@ const ChatWindow = () => {
       <div className="flex items-center gap-4">
         <IconButton
           iconSize={18}
-          iconUrl="/assets/sweep.png"
+          iconUrl="assets/sweep.png"
           onClick={() => {}}
           text="Clear chat"
         />
@@ -17,20 +17,20 @@ const ChatWindow = () => {
         <div className="flex flex-1 items-center gap-4">
           <IconButton
             iconSize={18}
-            iconUrl="/assets/setting.png"
+            iconUrl="assets/setting.png"
             onClick={() => {}}
             text="Playground settings"
           />
           <IconButton
             iconSize={18}
-            iconUrl="/assets/code.png"
+            iconUrl="assets/code.png"
             onClick={() => {}}
             text="View code"
             disabled={true}
           />
           <IconButton
             iconSize={18}
-            iconUrl="/assets/sound.png"
+            iconUrl="assets/sound.png"
             onClick={() => {}}
             classes="border-none ml-auto flex-shrink-0"
           />
@@ -51,13 +51,13 @@ const ChatWindow = () => {
             iconSize={20}
             classes="border-none"
             onClick={() => {}}
-            iconUrl="/assets/mic.png"
+            iconUrl="assets/mic.png"
           />
           <IconButton
             iconSize={20}
             classes="border-none"
             onClick={() => {}}
-            iconUrl="/assets/send.png"
+            iconUrl="assets/send.png"
           />
         </div>
       </div>
