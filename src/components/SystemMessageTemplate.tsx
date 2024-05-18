@@ -6,9 +6,11 @@ import { systemMessages } from "../../config";
 import SMExamples from "./SMExamples";
 
 const SystemMessageTemplate = () => {
-  const [currentPromptId, setCurrentPromptId] = useState<number | null>(
-    systemMessages.length ? systemMessages[0]["id"] : null
-  );
+  // todo: fix this
+  // const [currentPromptId, setCurrentPromptId] = useState<number | null>(
+  //   systemMessages.length ? systemMessages[0]["id"] : null
+  // );
+  const [currentPromptId, setCurrentPromptId] = useState<number | null>(null);
 
   const handleOptionChange = (currentTemplateId: number) => {
     setCurrentPromptId(currentTemplateId);
