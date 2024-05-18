@@ -1,6 +1,6 @@
 import { IPromptExample } from "@types";
 import React, { useEffect, useState } from "react";
-import { promptsExamples } from "../../config";
+import { promptsExamples } from "../config";
 import SMForm from "./SMForm";
 import IconButton from "./buttons/IconButton";
 

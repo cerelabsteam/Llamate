@@ -1,6 +1,8 @@
-import { ISystemMessage } from "@types";
 import { useState } from "react";
-import { systemMessages } from "../../config";
+
+import { systemMessages } from "@/config";
+import { ISystemMessage } from "@types";
+
 import SMExamples from "./SMExamples";
 
 const SystemMessageTemplate = () => {
