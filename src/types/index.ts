@@ -10,3 +10,9 @@ export interface IPromptExample {
   assistant: string;
   id: string | number;
 }
+
+export interface IDeploymentModel {
+  id: string | number;
+  name: string;
+  maxTokens: number;
+}

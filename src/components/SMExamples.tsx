@@ -1,11 +1,13 @@
-import { IPromptExample } from "@types";
 import React, { useEffect, useState } from "react";
-import { promptsExamples } from "../config";
-import SMForm from "./SMForm";
+
+import { promptsExamples } from "@/config";
+import { IPromptExample } from "@types";
+
 import IconButton from "./buttons/IconButton";
+import SMForm from "./SMForm";
 
 const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
-  const [examples, setExamples] = useState(promptsExamples);
+  const [examples, setExamples] = useState<IPromptExample[]>(promptsExamples);
 
   const existingExamples: IPromptExample[] = examples.filter(
     (example) => example.pid === promptId
