@@ -53,12 +53,12 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
     }
   };
 
-  const handleAddButtonClick = () => {};
-  const renderExistingExamples = (examples: IPromptExample[]) => {
-    return examples.map((example) => {
-      return <SMForm isEditable={false} key={example.id} prevData={example} />;
-    });
-  };
+  // const handleAddButtonClick = () => {};
+  // const renderExistingExamples = (examples: IPromptExample[]) => {
+  //   return examples.map((example) => {
+  //     return <SMForm isEditable={false} key={example.id} prevData={example} />;
+  //   });
+  // };
 
   useEffect(() => {
     setCurrentExampleIndex(examplesLength ? 0 : null);
