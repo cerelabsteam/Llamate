@@ -1,5 +1,7 @@
-import { ISystemMessage } from "@types";
 import { useState } from "react";
+
+import { ISystemMessage } from "@types";
+
 import { systemMessages } from "../../config";
 import SMExamples from "./SMExamples";
 

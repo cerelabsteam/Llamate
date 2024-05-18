@@ -1,5 +1,7 @@
-import { IPromptExample } from "@types";
 import React, { useRef, useState } from "react";
+
+import { IPromptExample } from "@types";
+
 import IconButton from "./buttons/IconButton";
 import SMTextGroup from "./inputs/SMTextGroup";
 
