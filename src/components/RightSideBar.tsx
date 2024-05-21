@@ -1,21 +1,44 @@
-import { ChangeEvent, useState } from "react";
+import { ChangeEvent, useContext, useState } from "react";
 
 import { deploymentModels } from "@config";
+import AppContext from "@context";
 import { IDeploymentModel } from "@types";
 
 import SidebarHeading from "./SidebarHeading";
 
 const RightSideBar = () => {
-  const [sessionCount, setSessionCount] = useState(1);
+  const appData = useContext(AppContext);
+
+  const [sessionCount, setSessionCount] = useState(
+    appData.chatParameters.pastMessagesToInclude
+  );
   const handleClick = () => {};
 
   const handleRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSessionCount(+e.target.value);
+    appData.setPastMessagesToInclude(+e.target.value);
   };
+
+  // set deployment model name
+  const handleModelChange = (e: ChangeEvent<HTMLSelectElement>) => {
+    appData.setDeploymentName(e.target.dataset?.modelname ?? "");
+  };
+
+  // when intially no selected model set the first one
+  if (!appData.chatParameters.deploymentName) {
+    if (deploymentModels.length) {
+      appData.setDeploymentName(deploymentModels[0].name);
+    }
+  }
 
   const renderModelOptions = (models: IDeploymentModel[]) => {
     return models.map((model) => (
-      <option key={model.id} value={model.id} className="p-0.5">
+      <option
+        key={model.id}
+        value={model.id}
+        className="p-0.5"
+        data-modelname={model.name}
+      >
         {model.name}
       </option>
     ));
@@ -31,6 +54,7 @@ const RightSideBar = () => {
             name="dep-model"
             id="dep-model"
             className="block w-full border border-solid border-gray-500 outline-none p-1 rounded-sm"
+            onChange={handleModelChange}
           >
             {renderModelOptions(deploymentModels)}
           </select>

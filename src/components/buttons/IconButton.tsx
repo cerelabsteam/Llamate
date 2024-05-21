@@ -10,6 +10,7 @@ const IconButton: React.FC<{
   text?: string;
   disabled?: boolean;
   type?: "submit" | "button";
+  textClasses?: string;
 }> = ({
   iconSize,
   iconUrl,
@@ -18,6 +19,7 @@ const IconButton: React.FC<{
   onClick,
   disabled = false,
   type = "button",
+  textClasses,
 }) => {
   return (
     <button
@@ -38,7 +40,9 @@ const IconButton: React.FC<{
         className={`w-full h-full object-contain`}
         style={{ width: `${iconSize}px`, height: `${iconSize}px` }}
       />
-      {text && <p className="text-gray-500">{text}</p>}
+      {text && (
+        <p className={twMerge("text-gray-500", clsx(textClasses))}>{text}</p>
+      )}
     </button>
   );
 };
