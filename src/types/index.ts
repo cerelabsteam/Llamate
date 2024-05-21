@@ -16,3 +16,31 @@ export interface IDeploymentModel {
   name: string;
   maxTokens: number;
 }
+
+export interface IAppContext {
+  systemPrompt: string | null;
+  examples: IPromptExample[] | null;
+  chatParameters: {
+    deploymentName: string | null;
+    pastMessagesToInclude: number;
+  };
+  isChatWindowExpanded: boolean;
+  _allExamples: IPromptExample[] | null;
+  _allSystemPrompts: ISystemMessage[] | null;
+  setSystemPrompt: (value: string) => void;
+  setExamples: (value: IPromptExample[]) => void;
+  setDeploymentName: (value: string) => void;
+  setPastMessagesToInclude: (value: number) => void;
+  toggleChatWindowExpanded: () => void;
+  setAllExamples: (value: IPromptExample[]) => void;
+  setAllSystemPrompts: (value: ISystemMessage[]) => void;
+}
+
+export interface IImportExport {
+  systemPrompt: string;
+  fewShotExamples: Partial<IPromptExample>[];
+  chatParameters: {
+    deploymentName: string;
+    pastMessagesToInclude: number;
+  };
+}

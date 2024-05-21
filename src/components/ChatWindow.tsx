@@ -1,10 +1,23 @@
+import clsx from "clsx";
+import { useContext } from "react";
+
+import AppContext from "@context";
+
 import IconButton from "./buttons/IconButton";
 import ChatInfoMessage from "./ChatInfoMessage";
 import ChatInput from "./inputs/ChatInput";
 
 const ChatWindow = () => {
+  const appData = useContext(AppContext);
+
+  const isChatWindowExpanded = appData?.isChatWindowExpanded;
   return (
-    <section className="w-3/5 flex flex-col p-6 bg-gray-100">
+    <section
+      className={clsx(" flex flex-col p-6 bg-gray-100", {
+        "w-full": isChatWindowExpanded,
+        "w-3/5": !isChatWindowExpanded,
+      })}
+    >
       {/* action buttons */}
       <div className="flex items-center gap-4">
         <IconButton
@@ -17,21 +30,23 @@ const ChatWindow = () => {
         <div className="flex flex-1 items-center gap-4">
           <IconButton
             iconSize={18}
-            iconUrl="assets/setting.png"
+            iconUrl="assets/export.png"
             onClick={() => {}}
-            text="Playground settings"
+            text="Export chat"
           />
-          <IconButton
+          {/* <IconButton
             iconSize={18}
             iconUrl="assets/code.png"
             onClick={() => {}}
             text="View code"
             disabled={true}
-          />
+          /> */}
           <IconButton
             iconSize={18}
-            iconUrl="assets/sound.png"
-            onClick={() => {}}
+            iconUrl={`assets/${
+              isChatWindowExpanded ? "shrink-screen" : "fullscreen"
+            }.png`}
+            onClick={appData!.toggleChatWindowExpanded}
             classes="border-none ml-auto flex-shrink-0"
           />
         </div>

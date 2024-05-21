@@ -1,19 +1,23 @@
-import React, { useEffect, useState } from "react";
+import React, { useContext, useEffect, useState } from "react";
 
-import { promptsExamples } from "@/config";
+import AppContext from "@context";
 import { IPromptExample } from "@types";
 
 import IconButton from "./buttons/IconButton";
 import SMForm from "./SMForm";
 
-const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
-  const [examples, setExamples] = useState<IPromptExample[]>(promptsExamples);
+const SMExamples: React.FC<{ promptId: number | string }> = ({ promptId }) => {
+  const appData = useContext(AppContext);
 
-  const existingExamples: IPromptExample[] = examples.filter(
+  const { _allExamples } = appData;
+
+  const existingExamples = _allExamples?.filter(
     (example) => example.pid === promptId
   );
 
-  const examplesLength = existingExamples.length;
+  const examplesLength = existingExamples?.length;
+
+  appData.setExamples(existingExamples ?? []);
 
   const [currentExampleIndex, setCurrentExampleIndex] = useState<number | null>(
     examplesLength ? 0 : null
@@ -28,9 +32,7 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
       pid: promptId,
     };
 
-    setExamples((prevData) => {
-      return [...prevData, promptData];
-    });
+    appData.setAllExamples([..._allExamples!, promptData]);
     setIsAddButtonOn(false);
   };
 
@@ -53,13 +55,6 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
     }
   };
 
-  // const handleAddButtonClick = () => {};
-  // const renderExistingExamples = (examples: IPromptExample[]) => {
-  //   return examples.map((example) => {
-  //     return <SMForm isEditable={false} key={example.id} prevData={example} />;
-  //   });
-  // };
-
   useEffect(() => {
     setCurrentExampleIndex(examplesLength ? 0 : null);
   }, [promptId, examplesLength]);
@@ -72,12 +67,12 @@ const SMExamples: React.FC<{ promptId: number }> = ({ promptId }) => {
       <p>Examples</p>
       {/* {renderExistingExamples(existingExamples)} */}
 
-      {currentExampleIndex !== null && currentExampleIndex < examplesLength ? (
+      {currentExampleIndex !== null && currentExampleIndex < examplesLength! ? (
         <SMForm
           handleSubmit={handleSMFormSubmit}
           isEditable={false}
-          key={existingExamples[currentExampleIndex].id}
-          prevData={existingExamples[currentExampleIndex]}
+          key={existingExamples![currentExampleIndex].id}
+          prevData={existingExamples![currentExampleIndex]}
         />
       ) : (
         <p>No example present for current template.</p>

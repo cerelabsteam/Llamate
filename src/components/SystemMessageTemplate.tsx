@@ -1,27 +1,67 @@
-import { useState } from "react";
+import { useContext, useRef, useState } from "react";
 
-import { systemMessages } from "@/config";
+import AppContext from "@context";
 import { ISystemMessage } from "@types";
 
+import SMTextGroup from "./inputs/SMTextGroup";
 import SMExamples from "./SMExamples";
 
-const SystemMessageTemplate = () => {
-  // todo: fix this
-  // const [currentPromptId, setCurrentPromptId] = useState<number | null>(
-  //   systemMessages.length ? systemMessages[0]["id"] : null
-  // );
-  const [currentPromptId, setCurrentPromptId] = useState<number | null>(null);
+const EMPTY_TEMPLATE_VALUE = "empty-sm";
 
-  const handleOptionChange = (currentTemplateId: number) => {
+const SystemMessageTemplate = () => {
+  const appData = useContext(AppContext);
+  const { _allSystemPrompts } = appData;
+
+  const [currentPromptId, setCurrentPromptId] = useState<
+    number | string | null
+  >(_allSystemPrompts?.length ? _allSystemPrompts![0]?.id : null);
+
+  const [systemErrorText, setSystemErrorText] = useState<string | null>(null);
+
+  const systemInputRef = useRef<HTMLTextAreaElement>(null);
+
+  // set system message on initial load
+  if (!appData.systemPrompt) {
+    if (_allSystemPrompts?.length) {
+      appData.setSystemPrompt(_allSystemPrompts![0].system);
+    }
+  }
+
+  const handleOptionChange = (currentTemplateId: number | string) => {
+    if (currentTemplateId === EMPTY_TEMPLATE_VALUE) {
+      if (systemInputRef.current) {
+        systemInputRef.current.value = "";
+      }
+    }
+    const existingSystemMessage = _allSystemPrompts?.find(
+      (sm) => sm.id === +currentTemplateId
+    );
+
+    if (existingSystemMessage) {
+      if (systemInputRef.current) {
+        systemInputRef.current.value = existingSystemMessage.system;
+      }
+      appData.setSystemPrompt(existingSystemMessage.system);
+    }
     setCurrentPromptId(currentTemplateId);
   };
 
-  const renderSystemOptions = (systemMessage: ISystemMessage[]) =>
-    systemMessage.map((message) => (
+  const renderSystemOptions = (systemMessage: ISystemMessage[] | null) => {
+    if (systemMessage?.length) {
+      // setCurrentPromptId(systemMessage[0].id);
+      setTimeout(() => {
+        if (systemInputRef.current) {
+          systemInputRef.current.value = systemMessage[0].system;
+        }
+      }, 200);
+    }
+
+    return systemMessage?.map((message) => (
       <option value={message.id} key={message.id}>
         {message.option}
       </option>
     ));
+  };
 
   return (
     <div className="w-full flex flex-col gap-4">
@@ -33,10 +73,20 @@ const SystemMessageTemplate = () => {
           className="block w-full border border-solid border-gray-500 outline-none p-1 rounded-sm"
           onChange={(e) => handleOptionChange(+e.target.value)}
         >
-          {renderSystemOptions(systemMessages)}
+          {renderSystemOptions(_allSystemPrompts)}
+          <option value={EMPTY_TEMPLATE_VALUE}>Empty template</option>
         </select>
       </div>
-      <SMExamples promptId={currentPromptId ?? -1} />
+      <SMTextGroup
+        disabled={false}
+        errorText={systemErrorText}
+        labelText="System"
+        textRef={systemInputRef}
+        minRows={4}
+      />
+      {currentPromptId !== EMPTY_TEMPLATE_VALUE ? (
+        <SMExamples promptId={currentPromptId ?? -1} />
+      ) : null}
     </div>
   );
 };
