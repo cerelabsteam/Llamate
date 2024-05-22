@@ -11,13 +11,9 @@ const ChatWindow = () => {
   const appData = useContext(AppContext);
 
   const isChatWindowExpanded = appData?.isChatWindowExpanded;
+
   return (
-    <section
-      className={clsx(" flex flex-col p-6 bg-gray-100", {
-        "w-full": isChatWindowExpanded,
-        "w-3/5": !isChatWindowExpanded,
-      })}
-    >
+    <section className={clsx(" flex flex-col flex-1 p-6 bg-gray-100", {})}>
       {/* action buttons */}
       <div className="flex items-center gap-4">
         <IconButton

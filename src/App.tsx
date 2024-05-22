@@ -1,4 +1,5 @@
-import { useContext } from "react";
+import { PanelLeft, PanelRight } from "lucide-react";
+import { useContext, useState } from "react";
 
 import IconButton from "@components/buttons/IconButton";
 import ChatWindow from "@components/ChatWindow";
@@ -11,11 +12,33 @@ function App() {
   const appData = useContext(AppContext);
 
   const isChatWindowExpanded = appData?.isChatWindowExpanded;
+
+  const [isLeftSidebarOpen, setisLeftSidebarOpen] = useState(false);
+  const [isRightSidebarOpen, setisRightSidebarOpen] = useState(false);
+
+  const panelButtonsClass = "text-gray-600 hover:text-gray-700 cursor-pointer";
+
+  const toggleLeftSidebarState = () => {
+    setisLeftSidebarOpen((prev) => !prev);
+  };
+
+  const toggleRightSidebarState = () => {
+    setisRightSidebarOpen((prev) => !prev);
+  };
+
   return (
     <div className="p-8 flex flex-col gap-4 w-screen h-screen">
       <div className="flex justify-between items-center">
-        <p className="text-2xl">Chat playground</p>
-        <div className="flex gap-4">
+        <div className="flex-center gap-3">
+          {!isChatWindowExpanded && (
+            <PanelLeft
+              className={panelButtonsClass}
+              onClick={toggleLeftSidebarState}
+            />
+          )}
+          <p className="text-2xl">Chat playground</p>
+        </div>
+        <div className="flex-center gap-4">
           <IconButton
             iconSize={18}
             iconUrl="assets/arrow-down.png"
@@ -36,13 +59,24 @@ function App() {
             classes="border-none bg-primary rounded-none px-2 gap-1"
             textClasses="text-white"
           />
+
+          {!isChatWindowExpanded && (
+            <PanelRight
+              className={panelButtonsClass}
+              onClick={toggleRightSidebarState}
+            />
+          )}
         </div>
       </div>
       <div className="w-full h-[2px] bg-gray-600" />
-      <div className="main flex flex-1">
-        {!isChatWindowExpanded && <LeftSidebar />}
+      <div className="main flex flex-1 relative">
+        {!isChatWindowExpanded && isLeftSidebarOpen && (
+          <LeftSidebar toggleSidebarState={toggleLeftSidebarState} />
+        )}
         <ChatWindow />
-        {!isChatWindowExpanded && <RightSideBar />}
+        {!isChatWindowExpanded && isRightSidebarOpen && (
+          <RightSideBar toggleSidebarState={toggleRightSidebarState} />
+        )}
       </div>
     </div>
   );

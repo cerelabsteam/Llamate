@@ -43,6 +43,9 @@ const SystemMessageTemplate = () => {
       }
       appData.setSystemPrompt(existingSystemMessage.system);
     }
+
+    // set examples to empty array
+    appData.setExamples([]);
     setCurrentPromptId(currentTemplateId);
   };
 

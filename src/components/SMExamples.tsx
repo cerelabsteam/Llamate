@@ -17,7 +17,10 @@ const SMExamples: React.FC<{ promptId: number | string }> = ({ promptId }) => {
 
   const examplesLength = existingExamples?.length;
 
-  appData.setExamples(existingExamples ?? []);
+  // first check if there are any examples or not
+  if (appData.examples?.length === 0) {
+    appData.setExamples(existingExamples ?? []);
+  }
 
   const [currentExampleIndex, setCurrentExampleIndex] = useState<number | null>(
     examplesLength ? 0 : null
@@ -40,14 +43,17 @@ const SMExamples: React.FC<{ promptId: number | string }> = ({ promptId }) => {
     if (currentExampleIndex === null) {
       return;
     }
+
     if (buttonType === "left") {
       if (currentExampleIndex === 0) {
-        setCurrentExampleIndex(examplesLength === 1 ? 0 : examplesLength - 1);
+        setCurrentExampleIndex(
+          examplesLength === 1 ? 0 : examplesLength ?? 0 - 1
+        );
       } else {
         setCurrentExampleIndex((prevState) => prevState! - 1);
       }
     } else if (buttonType === "right") {
-      if (currentExampleIndex === examplesLength - 1) {
+      if (currentExampleIndex === examplesLength ?? 0 - 1) {
         setCurrentExampleIndex(0);
       } else {
         setCurrentExampleIndex((prevState) => prevState! + 1);
