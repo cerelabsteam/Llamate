@@ -6,13 +6,16 @@ import { IDeploymentModel } from "@types";
 
 import SidebarHeading from "./SidebarHeading";
 
-const RightSideBar = () => {
+const RightSideBar = ({
+  toggleSidebarState,
+}: {
+  toggleSidebarState: () => void;
+}) => {
   const appData = useContext(AppContext);
 
   const [sessionCount, setSessionCount] = useState(
     appData.chatParameters.pastMessagesToInclude
   );
-  const handleClick = () => {};
 
   const handleRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
     setSessionCount(+e.target.value);
@@ -45,7 +48,10 @@ const RightSideBar = () => {
   };
   return (
     <section className="w-1/5 flex flex-col p-6 shadow-lg overflow-auto">
-      <SidebarHeading handleClick={handleClick} headingText="Configuration" />
+      <SidebarHeading
+        handleClick={toggleSidebarState}
+        headingText="Configuration"
+      />
       <div className="w-full flex flex-col gap-4">
         <div className="form-group">
           <p className="font-bold">Deployment</p>
