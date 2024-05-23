@@ -1,3 +1,5 @@
+import { cn } from "@utils";
+
 import IconButton from "./buttons/IconButton";
 import SidebarHeading from "./SidebarHeading";
 import SystemMessageTemplate from "./SystemMessageTemplate";
@@ -7,8 +9,15 @@ const LeftSidebar = ({
 }: {
   toggleSidebarState: () => void;
 }) => {
+  const responsiveClasses =
+    " absolute sm:static z-20 top-0 left-0 sm:w-3/5 md:w-2/5 lg:w-1/5 max-h-screen sm:h-auto shadow-none bg-white blur-none";
   return (
-    <section className="flex flex-col w-1/5 p-6 shadow-lg gap-4 overflow-y-auto">
+    <section
+      className={cn(
+        "flex flex-col p-6 sm:shadow-lg gap-4 overflow-y-auto " +
+          responsiveClasses
+      )}
+    >
       <SidebarHeading handleClick={toggleSidebarState} headingText="Setup" />
 
       <IconButton

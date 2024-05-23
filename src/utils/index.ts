@@ -1,4 +1,6 @@
+import { ClassValue, clsx } from "clsx";
 import { saveAs } from "file-saver";
+import { twMerge } from "tailwind-merge";
 
 import { IAppContext, IImportExport } from "@types";
 
@@ -28,5 +30,9 @@ const exportToJson = (exportData: object, filename = "ChatSetup") => {
   });
   saveAs(jsonBlob, `${filename}.json`);
 };
+
+export function cn(...inputs: ClassValue[]) {
+  return twMerge(clsx(inputs));
+}
 
 export { exportToJson, transformToExportFormat };

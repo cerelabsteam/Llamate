@@ -3,6 +3,7 @@ import { ChangeEvent, useContext, useState } from "react";
 import { deploymentModels } from "@config";
 import AppContext from "@context";
 import { IDeploymentModel } from "@types";
+import { cn } from "@utils";
 
 import SidebarHeading from "./SidebarHeading";
 
@@ -46,8 +47,17 @@ const RightSideBar = ({
       </option>
     ));
   };
+
+  const responsiveClasses =
+    " absolute sm:static z-20 top-0 right-0 min-w-[300px] md:w-2/5 lg:w-1/5 h-screen sm:h-auto shadow-none bg-white blur-none";
+
   return (
-    <section className="w-1/5 flex flex-col p-6 shadow-lg overflow-auto">
+    <section
+      className={cn(
+        "flex flex-col p-6 sm:shadow-lg gap-4 overflow-y-auto" +
+          responsiveClasses
+      )}
+    >
       <SidebarHeading
         handleClick={toggleSidebarState}
         headingText="Configuration"
