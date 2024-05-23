@@ -7,7 +7,6 @@ const LeftSidebar = ({
 }: {
   toggleSidebarState: () => void;
 }) => {
-  const handleClick = () => {};
   return (
     <section className="flex flex-col w-1/5 p-6 shadow-lg gap-4 overflow-y-auto">
       <SidebarHeading handleClick={toggleSidebarState} headingText="Setup" />
