@@ -16,7 +16,7 @@ const SystemMessageTemplate = () => {
     number | string | null
   >(_allSystemPrompts?.length ? _allSystemPrompts![0]?.id : null);
 
-  const [systemErrorText, setSystemErrorText] = useState<string | null>(null);
+  const [systemErrorText] = useState<string | null>(null);
 
   const systemInputRef = useRef<HTMLTextAreaElement>(null);
 
