@@ -6,6 +6,7 @@ import ChatWindow from "@components/ChatWindow";
 import LeftSidebar from "@components/LeftSidebar";
 import RightSideBar from "@components/RightSideBar";
 import AppContext from "@context";
+import { IPromptExample, ISystemMessage } from "@types";
 import { cn, exportToJson, transformToExportFormat } from "@utils";
 
 function App() {
@@ -26,6 +27,23 @@ function App() {
     setisRightSidebarOpen((prev) => !prev);
   };
 
+  // fetch jsons from api
+  useEffect(() => {
+    const fetchData = async () => {
+      const templatesResponse = await fetch("data/templates.json");
+      const templates: ISystemMessage[] = await templatesResponse.json();
+
+      const examplesResponse = await fetch("data/examples.json");
+      const examples: IPromptExample[] = await examplesResponse.json();
+
+      if (templates && templates?.length)
+        appData.setAllSystemPrompts(templates);
+      if (examples && examples?.length) appData.setAllExamples(examples);
+    };
+
+    fetchData();
+  }, []);
+
   // when device is small then close both panels
   useEffect(() => {
     const breakPoint = 768;
@@ -39,7 +57,7 @@ function App() {
   }, []);
 
   return (
-    <div className={"p-8 flex flex-col w-screen h-screen relative"}>
+    <div className={"p-1 xs:p-8 flex flex-col w-screen h-screen relative"}>
       {/* backdrop component */}
       <div
         className={cn(

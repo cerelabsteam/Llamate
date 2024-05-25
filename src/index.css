@@ -39,4 +39,10 @@ body {
   .main {
     max-height: calc(100vh - 8rem);
   }
+
+  @media only screen and (max-width: 475px) {
+    .main {
+      max-height: calc(100vh - 2rem);
+    }
+  }
 }

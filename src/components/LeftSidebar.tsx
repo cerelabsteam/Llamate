@@ -10,7 +10,7 @@ const LeftSidebar = ({
   toggleSidebarState: () => void;
 }) => {
   const responsiveClasses =
-    " absolute sm:static z-20 top-0 left-0 sm:w-3/5 md:w-2/5 lg:w-1/5 max-h-screen sm:h-auto shadow-none bg-white blur-none";
+    " absolute sm:static z-20 top-0 left-0 min-w-[300px] md:w-2/5 lg:w-1/5 h-screen sm:h-auto shadow-none bg-white blur-none";
   return (
     <section
       className={cn(

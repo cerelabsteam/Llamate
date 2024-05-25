@@ -1,6 +1,5 @@
 import { createContext } from "react";
 
-import { promptsExamples, systemMessages } from "@config";
 import { IAppContext } from "@types";
 
 const initialContextValue: IAppContext = {
@@ -11,8 +10,8 @@ const initialContextValue: IAppContext = {
     pastMessagesToInclude: 5,
   },
   isChatWindowExpanded: false,
-  _allExamples: promptsExamples,
-  _allSystemPrompts: systemMessages,
+  _allExamples: [],
+  _allSystemPrompts: [],
   setSystemPrompt: () => {},
   setExamples: () => {},
   setDeploymentName: () => {},
