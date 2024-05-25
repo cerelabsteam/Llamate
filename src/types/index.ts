@@ -38,7 +38,7 @@ export interface IAppContext {
 
 export interface IImportExport {
   systemPrompt: string;
-  fewShotExamples: Partial<IPromptExample>[];
+  fewShotExamples: { userInput: string; chatbotResponse: string }[];
   chatParameters: {
     deploymentName: string;
     pastMessagesToInclude: number;

@@ -13,8 +13,8 @@ const transformToExportFormat = (contextState: IAppContext): IImportExport => {
     // TODO check the format for examples export format
     fewShotExamples:
       examples?.map((example) => ({
-        user: example.user,
-        assistant: example.assistant,
+        userInput: example.user,
+        chatbotResponse: example.assistant,
       })) ?? [], // Assuming examples are strings
     chatParameters: {
       deploymentName: chatParameters.deploymentName || "",
