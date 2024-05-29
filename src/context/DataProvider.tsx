@@ -1,11 +1,18 @@
 import { useState } from "react";
 
 import { AppProvider, initialContextValue } from "@context";
-import { IPromptExample, ISystemMessage } from "@types";
+import {
+  IDeploymentModel,
+  IImportData,
+  IPromptExample,
+  ISystemMessage,
+} from "@types";
 
 const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   children,
 }) => {
+  const [templateId, setTemplateId] = useState<string | number | null>(null);
+
   const [systemPrompt, setSystemPrompt] = useState(
     initialContextValue.systemPrompt
   );
@@ -13,10 +20,6 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [chatParameters, setChatParameters] = useState(
     initialContextValue.chatParameters
   );
-
-  // const systemPrompt = initialContextValue.systemPrompt;
-  // const examples = initialContextValue.examples;
-  // const chatParameters = initialContextValue.chatParameters;
 
   const [isChatWindowExpanded, setIsChatWindowExpanded] = useState(
     initialContextValue.isChatWindowExpanded
@@ -27,6 +30,21 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
   const [allExamples, setAllExamples] = useState(
     initialContextValue._allExamples
   );
+
+  const [deployments, setDeployments] = useState(
+    initialContextValue.deployments
+  );
+
+  const [deploymentId, setDeploymentId] = useState(
+    initialContextValue.deploymentId
+  );
+
+  const [isImported, setIsImported] = useState(initialContextValue.isImported);
+  const [importData, setImportData] = useState(initialContextValue.importData);
+
+  const handleSetDeployments = (value: IDeploymentModel[]) => {
+    setDeployments(value);
+  };
 
   const handleSetSystemPrompt = (value: string) => {
     setSystemPrompt(value);
@@ -44,19 +62,6 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     setChatParameters((prev) => ({ ...prev, pastMessagesToInclude: value }));
   };
 
-  // const handleSetExamples = (value: IPromptExample[]) => {
-  //   initialContextValue.examples = value;
-  // };
-  // const handleSetDeploymentName = (value: string) => {
-  //   initialContextValue.chatParameters.deploymentName = value;
-  // };
-  // const handleSetPastMessagesToInclude = (value: number) => {
-  //   initialContextValue.chatParameters.pastMessagesToInclude = value;
-  // };
-  // const handleSetSystemPrompt = (value: string) => {
-  //   initialContextValue.systemPrompt = value;
-  // };
-
   const handleToggleChatWindowExpanded = () => {
     setIsChatWindowExpanded((prev: boolean) => !prev);
   };
@@ -69,15 +74,39 @@ const DataProvider: React.FC<{ children: React.ReactNode }> = ({
     setAllExamples(value);
   };
 
+  const handleSetTemplateId = (value: string | number | null) => {
+    setTemplateId(value);
+  };
+
+  const handleSetDeploymentId = (value: string | number | null) => {
+    setDeploymentId(value);
+  };
+
+  const handleSetIsImported = (value: boolean) => {
+    setIsImported(value);
+  };
+
+  const handleImportData = (value: IImportData) => setImportData(value);
+
   return (
     <AppProvider
       value={{
+        templateId,
+        setTemplateId: handleSetTemplateId,
+        deployments,
         systemPrompt,
         examples,
         chatParameters,
         isChatWindowExpanded,
         _allSystemPrompts: allSystemPrompts,
         _allExamples: allExamples,
+        deploymentId,
+        isImported,
+        importData,
+        setIsImported: handleSetIsImported,
+        setImportData: handleImportData,
+        setDeploymentId: handleSetDeploymentId,
+        setDeployments: handleSetDeployments,
         setSystemPrompt: handleSetSystemPrompt,
         setExamples: handleSetExamples,
         setAllExamples: handleSetAllExamples,

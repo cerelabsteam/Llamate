@@ -3,6 +3,7 @@ import { createContext } from "react";
 import { IAppContext } from "@types";
 
 const initialContextValue: IAppContext = {
+  templateId: null,
   systemPrompt: "",
   examples: [],
   chatParameters: {
@@ -12,6 +13,14 @@ const initialContextValue: IAppContext = {
   isChatWindowExpanded: false,
   _allExamples: [],
   _allSystemPrompts: [],
+  deploymentId: null,
+  deployments: [],
+  isImported: false,
+  importData: null,
+  setDeploymentId: () => {},
+  setImportData: () => {},
+  setIsImported: () => {},
+  setDeployments: () => {},
   setSystemPrompt: () => {},
   setExamples: () => {},
   setDeploymentName: () => {},
@@ -19,6 +28,7 @@ const initialContextValue: IAppContext = {
   toggleChatWindowExpanded: () => {},
   setAllExamples: () => {},
   setAllSystemPrompts: () => {},
+  setTemplateId: () => {},
 };
 
 const AppContext = createContext<IAppContext>(initialContextValue);

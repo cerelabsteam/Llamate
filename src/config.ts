@@ -1,3 +1,3 @@
-export const deploymentModels = [
-  { id: "M01", name: "cerelabs-gpt-4", maxTokens: 8000 },
-];
+export const BREAK_POINT = 768;
+
+export const IMPORT_DELIMITER = "IMP";

@@ -9,8 +9,17 @@ const SMForm: React.FC<{
   isEditable: boolean;
   prevData?: Partial<IPromptExample>;
   handleSubmit?: (user: string, assistant: string) => void;
+  isDeletetable?: boolean;
   handleCancel?: () => void;
-}> = ({ isEditable, prevData, handleSubmit, handleCancel }) => {
+  handleDelete?: (id: string) => void;
+}> = ({
+  isEditable,
+  prevData,
+  handleSubmit,
+  handleCancel,
+  isDeletetable,
+  handleDelete,
+}) => {
   const [userError, setUserError] = useState<string | null>(null);
   const [assistantError, setAssistantError] = useState<string | null>(null);
 
@@ -18,6 +27,9 @@ const SMForm: React.FC<{
   const assistantRef = useRef<HTMLTextAreaElement>(null);
 
   const resetForm = () => {
+    if (isDeletetable && handleDelete) {
+      handleDelete(prevData?.id?.toString() ?? "");
+    }
     if (isEditable) {
       if (userRef.current) userRef.current.value = "";
       if (assistantRef.current) assistantRef.current.value = "";
@@ -54,7 +66,7 @@ const SMForm: React.FC<{
 
   return (
     <form className="flex flex-col gap-2 relative ">
-      {isEditable && (
+      {(isEditable || isDeletetable) && (
         <IconButton
           onClick={resetForm}
           iconUrl={"assets/delete.png"}

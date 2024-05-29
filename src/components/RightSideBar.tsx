@@ -1,6 +1,5 @@
-import { ChangeEvent, useContext, useState } from "react";
+import { ChangeEvent, useContext } from "react";
 
-import { deploymentModels } from "@config";
 import AppContext from "@context";
 import { IDeploymentModel } from "@types";
 import { cn } from "@utils";
@@ -14,12 +13,9 @@ const RightSideBar = ({
 }) => {
   const appData = useContext(AppContext);
 
-  const [sessionCount, setSessionCount] = useState(
-    appData.chatParameters.pastMessagesToInclude
-  );
+  const sessionCount = appData.chatParameters.pastMessagesToInclude;
 
   const handleRangeChange = (e: ChangeEvent<HTMLInputElement>) => {
-    setSessionCount(+e.target.value);
     appData.setPastMessagesToInclude(+e.target.value);
   };
 
@@ -28,13 +24,6 @@ const RightSideBar = ({
     appData.setDeploymentName(e.target.dataset?.modelname ?? "");
   };
 
-  // when intially no selected model set the first one
-  if (!appData.chatParameters.deploymentName) {
-    if (deploymentModels.length) {
-      appData.setDeploymentName(deploymentModels[0].name);
-    }
-  }
-
   const renderModelOptions = (models: IDeploymentModel[]) => {
     return models.map((model) => (
       <option
@@ -42,6 +31,7 @@ const RightSideBar = ({
         value={model.id}
         className="p-0.5"
         data-modelname={model.name}
+        // selected={model.name === appData.chatParameters.deploymentName}
       >
         {model.name}
       </option>
@@ -71,8 +61,9 @@ const RightSideBar = ({
             id="dep-model"
             className="block w-full border border-solid border-gray-500 outline-none p-1 rounded-sm"
             onChange={handleModelChange}
+            value={appData.chatParameters.deploymentName ?? ""}
           >
-            {renderModelOptions(deploymentModels)}
+            {renderModelOptions(appData?.deployments ?? [])}
           </select>
         </div>
 
