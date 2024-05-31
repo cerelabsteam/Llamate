@@ -22,7 +22,7 @@ const LeftSidebar = ({
 
       <IconButton
         iconSize={20}
-        iconUrl="assets/save.png"
+        iconUrl="assets/save-changes.png"
         onClick={() => {}}
         text="Save changes"
         classes="w-3/5"
