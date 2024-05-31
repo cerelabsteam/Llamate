@@ -2,3 +2,4 @@
 2. keep data in data/folder
 3. response UI
 4. Commit test.
+5. Test commit with Gitmoji.
