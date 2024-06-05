@@ -2,15 +2,14 @@ import "./stylesheets/App.css";
 
 import { useState } from "react";
 
-import DarkModeIcon from "@mui/icons-material/DarkMode";
-import LightModeIcon from "@mui/icons-material/LightMode";
 import MenuIcon from "@mui/icons-material/Menu";
-import { Fab, IconButton, Paper } from "@mui/material";
+import { IconButton, Paper } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import uiConfig from "./configs/ui";
 import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
+import ThemeToggleFAB from "./ThemeToggleFAB";
 
 function App() {
   const [isPromptEngineeringSidebarOpen, changeIsPromptEngineeringSidebarOpen] =
@@ -33,7 +32,7 @@ function App() {
   return (
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
-      <Paper square>
+      <Paper square className="App">
         <IconButton onClick={() => changeIsPromptEngineeringSidebarOpen(true)}>
           <MenuIcon />
         </IconButton>
@@ -43,13 +42,10 @@ function App() {
             changeIsPromptEngineeringSidebarOpen
           }
         />
-        <Fab onClick={handleThemeToggle}>
-          {currentThemePalette === "light" ? (
-            <DarkModeIcon />
-          ) : (
-            <LightModeIcon />
-          )}
-        </Fab>
+        <ThemeToggleFAB
+          handleThemeToggle={handleThemeToggle}
+          currentThemePalette={currentThemePalette}
+        />
       </Paper>
     </ThemeProvider>
   );
