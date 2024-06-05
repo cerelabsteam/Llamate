@@ -1,12 +1,27 @@
 import "./stylesheets/App.css";
 
-import { Button } from "@mui/material";
+import { useState } from "react";
+
+import MenuIcon from "@mui/icons-material/Menu";
+import { IconButton } from "@mui/material";
+
+import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 
 function App() {
+  const [isPromptEngineeringSidebarOpen, changeIsPromptEngineeringSidebarOpen] =
+    useState(false);
+
   return (
     <>
-      <h1>llamate</h1>
-      <Button>Start</Button>
+      <IconButton onClick={() => changeIsPromptEngineeringSidebarOpen(true)}>
+        <MenuIcon />
+      </IconButton>
+      <PromptEngineeringSidebar
+        isPromptEngineeringSidebarOpen={isPromptEngineeringSidebarOpen}
+        changeIsPromptEngineeringSidebarOpen={
+          changeIsPromptEngineeringSidebarOpen
+        }
+      />
     </>
   );
 }
