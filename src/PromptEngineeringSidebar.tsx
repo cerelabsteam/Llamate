@@ -28,9 +28,15 @@ function PromptEngineeringSidebar(props: {
   changeIsPromptEngineeringSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   // state
-  const [template, changeTemplate] = useState("");
-  const [systemPrompt, changesystemPrompt] = useState<string>("");
-  const [examples, changeExamples] = useState<Examples>([]);
+  const [template, changeTemplate] = useState(templates[0].id);
+  const [systemPrompt, changeSystemPrompt] = useState<string>(
+    templates[0].systemPrompt
+  );
+  const [examples, changeExamples] = useState<Examples>(
+    templates[0].fewShotExamples.map((ele) => {
+      return { user: ele.userInput, assistant: ele.chatbotResponse };
+    })
+  );
 
   const handleChangeTemplate = (event: SelectChangeEvent) => {
     changeTemplate(event.target.value as string);
@@ -38,7 +44,7 @@ function PromptEngineeringSidebar(props: {
       (ele) => ele.id === event.target.value
     );
     if (selectedTemplate) {
-      changesystemPrompt(selectedTemplate.systemPrompt);
+      changeSystemPrompt(selectedTemplate.systemPrompt);
       changeExamples(
         selectedTemplate.fewShotExamples.map((ele) => {
           return { user: ele.userInput, assistant: ele.chatbotResponse };
@@ -91,7 +97,7 @@ function PromptEngineeringSidebar(props: {
             labelId="system-template-label"
             id="demo-simple-select"
             value={template}
-            label="Age"
+            label="Use a system message template"
             onChange={handleChangeTemplate}
           >
             {templates.map((template) => {
@@ -108,7 +114,7 @@ function PromptEngineeringSidebar(props: {
           multiline
           rows={4}
           value={systemPrompt}
-          onChange={(e) => changesystemPrompt(e.target.value)}
+          onChange={(e) => changeSystemPrompt(e.target.value)}
         />
         <Button
           variant="outlined"
