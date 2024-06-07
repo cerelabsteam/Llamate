@@ -86,16 +86,17 @@ function PromptEngineeringSidebar(props: {
         props.changeIsPromptEngineeringSidebarOpen(false);
       }}
     >
-      <Typography variant="h6">Setup</Typography>
-      <form>
-        <Button variant="outlined">Apply changes</Button>
+      <form className="PromptEngineeringSidebar">
+        <Typography variant="h6" noWrap component="div">
+          Setup
+        </Typography>
+        <Button variant="contained">Apply changes</Button>
         <FormControl fullWidth>
           <InputLabel id="system-template-label">
             Use a system message template
           </InputLabel>
           <Select
             labelId="system-template-label"
-            id="demo-simple-select"
             value={template}
             label="Use a system message template"
             onChange={handleChangeTemplate}
@@ -133,15 +134,17 @@ function PromptEngineeringSidebar(props: {
               >
                 Example {idx + 1}
               </AccordionSummary>
-              <AccordionDetails>
+              <AccordionDetails className="PromptEngineeringSidebar-ExampleAccordionDetails">
                 <TextField
                   value={example.user}
+                  label="User:"
                   onChange={(e) => {
                     handleChangeExampleTextField(e.target.value, idx, "user");
                   }}
                 />
                 <TextField
                   value={example.assistant}
+                  label="Assistant:"
                   onChange={(e) => {
                     handleChangeExampleTextField(
                       e.target.value,
