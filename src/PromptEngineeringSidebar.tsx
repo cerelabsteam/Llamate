@@ -20,6 +20,7 @@ import {
   Typography,
 } from "@mui/material";
 
+import templates from "./configs/templates";
 import { Example, Examples } from "./types/PromptEngineeringSidebar";
 
 function PromptEngineeringSidebar(props: {
@@ -28,10 +29,24 @@ function PromptEngineeringSidebar(props: {
 }) {
   // state
   const [template, changeTemplate] = useState("");
+  const [systemPrompt, changesystemPrompt] = useState<string>("");
   const [examples, changeExamples] = useState<Examples>([]);
 
   const handleChangeTemplate = (event: SelectChangeEvent) => {
     changeTemplate(event.target.value as string);
+    const selectedTemplate = templates.find(
+      (ele) => ele.id === event.target.value
+    );
+    if (selectedTemplate) {
+      changesystemPrompt(selectedTemplate.systemPrompt);
+      changeExamples(
+        selectedTemplate.fewShotExamples.map((ele) => {
+          return { user: ele.userInput, assistant: ele.chatbotResponse };
+        })
+      );
+    } else {
+      console.error("Invalid template id: " + event.target.value);
+    }
   };
   const handleAddExample = () => {
     changeExamples((oldExamples) => {
@@ -69,25 +84,31 @@ function PromptEngineeringSidebar(props: {
       <form>
         <Button variant="outlined">Apply changes</Button>
         <FormControl fullWidth>
-          <InputLabel id="demo-simple-select-label">Age</InputLabel>
+          <InputLabel id="system-template-label">
+            Use a system message template
+          </InputLabel>
           <Select
-            labelId="demo-simple-select-label"
+            labelId="system-template-label"
             id="demo-simple-select"
             value={template}
             label="Age"
             onChange={handleChangeTemplate}
           >
-            <MenuItem value={10}>Ten</MenuItem>
-            <MenuItem value={20}>Twenty</MenuItem>
-            <MenuItem value={30}>Thirty</MenuItem>
+            {templates.map((template) => {
+              return (
+                <MenuItem value={template.id} key={template.id}>
+                  {template.humanReadableName}
+                </MenuItem>
+              );
+            })}
           </Select>
         </FormControl>
         <TextField
-          id="outlined-multiline-static"
           label="System message"
           multiline
           rows={4}
-          defaultValue="Default Value"
+          value={systemPrompt}
+          onChange={(e) => changesystemPrompt(e.target.value)}
         />
         <Button
           variant="outlined"
