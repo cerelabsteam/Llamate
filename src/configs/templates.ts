@@ -6,6 +6,7 @@ import jsonFormatterAssistantTemplate from "./templates/jsonFormatterAssistant";
 import marketingWritingAssistantTemplate from "./templates/marketingWritingAssistant";
 import shakespeareWritingAssistantTemplate from "./templates/shakespeareWritingAssistant";
 import xboxCustomerSupportAgentTemplate from "./templates/xboxCustomerSupportAgent";
+import emptyExampleTemplate from "./templates/emptyExample";
 
 const templates: Templates = [
   defaultTemplate,
@@ -15,5 +16,6 @@ const templates: Templates = [
   marketingWritingAssistantTemplate,
   shakespeareWritingAssistantTemplate,
   xboxCustomerSupportAgentTemplate,
+  emptyExampleTemplate,
 ];
 export default templates;
