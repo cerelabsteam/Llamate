@@ -7,15 +7,26 @@ import { IconButton, Paper } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
+import Chat from "./Chat";
+import templates from "./configs/templates";
 import uiConfig from "./configs/ui";
 import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 import ThemeToggleFAB from "./ThemeToggleFAB";
+import { Examples } from "./types/PromptEngineeringSidebar";
 
 function App() {
   const [isPromptEngineeringSidebarOpen, changeIsPromptEngineeringSidebarOpen] =
     useState(false);
   const [currentThemePalette, changeCurrentThemePalette] = useState(
     uiConfig.defaultThemePalette
+  );
+  const [activeSystemPrompt, changeActiveSystemPrompt] = useState<string>(
+    templates[0].systemPrompt
+  );
+  const [activeExamples, changeActiveExamples] = useState<Examples>(
+    templates[0].fewShotExamples.map((ele) => {
+      return { user: ele.userInput, assistant: ele.chatbotResponse };
+    })
   );
   const darkTheme = createTheme({
     palette: {
@@ -36,6 +47,10 @@ function App() {
         <IconButton onClick={() => changeIsPromptEngineeringSidebarOpen(true)}>
           <MenuIcon />
         </IconButton>
+        <Chat
+          activeSystemPrompt={activeSystemPrompt}
+          activeExamples={activeExamples}
+        />
         <PromptEngineeringSidebar
           isPromptEngineeringSidebarOpen={isPromptEngineeringSidebarOpen}
           changeIsPromptEngineeringSidebarOpen={
