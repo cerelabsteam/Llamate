@@ -5,7 +5,7 @@ import {
   FormEvent,
   SetStateAction,
   useEffect,
-  useState
+  useState,
 } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -25,7 +25,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 
 import templates from "./configs/templates";
@@ -113,6 +113,8 @@ function PromptEngineeringSidebar(props: {
       JSON.stringify(examples) !== JSON.stringify(props.activeExamples)
     ) {
       changeIsApplyChangesDisabled(false);
+    } else {
+      changeIsApplyChangesDisabled(true);
     }
   }, [systemPrompt, examples]);
 
