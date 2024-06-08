@@ -206,6 +206,8 @@ function PromptEngineeringSidebar(props: {
               <AccordionDetails className="PromptEngineeringSidebar-ExampleAccordionDetails">
                 <TextField
                   value={example.user}
+                  multiline
+                  rows={4}
                   label="User:"
                   onChange={(e) => {
                     handleChangeExampleTextField(e.target.value, idx, "user");
@@ -213,6 +215,8 @@ function PromptEngineeringSidebar(props: {
                 />
                 <TextField
                   value={example.assistant}
+                  multiline
+                  rows={4}
                   label="Assistant:"
                   onChange={(e) => {
                     handleChangeExampleTextField(
