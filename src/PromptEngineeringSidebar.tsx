@@ -5,7 +5,7 @@ import {
   FormEvent,
   SetStateAction,
   useEffect,
-  useState,
+  useState
 } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -25,11 +25,13 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 
 import templates from "./configs/templates";
 import { Example, Examples } from "./types/PromptEngineeringSidebar";
+
+import type { AlertProps } from "@mui/material";
 
 function PromptEngineeringSidebar(props: {
   isPromptEngineeringSidebarOpen: boolean;
@@ -38,6 +40,12 @@ function PromptEngineeringSidebar(props: {
   activeExamples: Examples;
   changeActiveSystemPrompt: Dispatch<SetStateAction<string>>;
   changeActiveExamples: Dispatch<SetStateAction<Examples>>;
+  handleSnackbarOpen: (
+    snackbarMessage: string,
+    alertSeverity: AlertProps["severity"],
+    alertVariant?: AlertProps["variant"],
+    showAlertTitle?: boolean
+  ) => void;
 }) {
   // state
   const [template, changeTemplate] = useState(templates[0].id);
@@ -99,6 +107,8 @@ function PromptEngineeringSidebar(props: {
     props.changeActiveSystemPrompt(systemPrompt);
     props.changeActiveExamples(examples);
     props.changeIsPromptEngineeringSidebarOpen(false);
+
+    props.handleSnackbarOpen("Successfully submitted", "success");
   };
 
   const handleReset = () => {
@@ -146,6 +156,7 @@ function PromptEngineeringSidebar(props: {
         >
           Apply changes
         </Button>
+
         <Button variant="outlined" color="warning" onClick={handleReset}>
           Reset
         </Button>
