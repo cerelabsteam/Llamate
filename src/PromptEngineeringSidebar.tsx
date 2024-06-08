@@ -3,6 +3,7 @@ import "./stylesheets/PromptEngineeringSidebar.css";
 import { Dispatch, SetStateAction, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
+import CloseIcon from "@mui/icons-material/Close";
 import ExpandMoreIcon from "@mui/icons-material/ExpandMore";
 import {
   Accordion,
@@ -12,6 +13,7 @@ import {
   Button,
   Drawer,
   FormControl,
+  IconButton,
   InputLabel,
   MenuItem,
   Select,
@@ -87,10 +89,25 @@ function PromptEngineeringSidebar(props: {
       }}
     >
       <form className="PromptEngineeringSidebar">
-        <Typography variant="h6" noWrap component="div">
-          Setup
-        </Typography>
+        <div className="PromptEngineeringSidebar-HeadingContainer">
+          <Typography variant="h6" noWrap component="div">
+            Setup
+          </Typography>
+          <IconButton
+            onClick={() => props.changeIsPromptEngineeringSidebarOpen(false)}
+          >
+            <CloseIcon />
+          </IconButton>
+        </div>
+
         <Button variant="contained">Apply changes</Button>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={() => props.changeIsPromptEngineeringSidebarOpen(false)}
+        >
+          Reset
+        </Button>
         <FormControl fullWidth>
           <InputLabel id="system-template-label">
             Use a system message template

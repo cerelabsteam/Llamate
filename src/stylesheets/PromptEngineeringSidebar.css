@@ -10,6 +10,12 @@
   flex-direction: column;
   gap: 1rem;
 }
+.PromptEngineeringSidebar-HeadingContainer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
 /* SMARTPHONES PORTRAIT */
 @media only screen and (min-width: 300px) {
 }
