@@ -1,6 +1,6 @@
 import "./stylesheets/PromptEngineeringSidebar.css";
 
-import { Dispatch, SetStateAction, useState } from "react";
+import { Dispatch, SetStateAction, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -28,6 +28,8 @@ import { Example, Examples } from "./types/PromptEngineeringSidebar";
 function PromptEngineeringSidebar(props: {
   isPromptEngineeringSidebarOpen: boolean;
   changeIsPromptEngineeringSidebarOpen: Dispatch<SetStateAction<boolean>>;
+  activeSystemPrompt: string;
+  activeExamples: Examples;
 }) {
   // state
   const [template, changeTemplate] = useState(templates[0].id);
@@ -39,7 +41,10 @@ function PromptEngineeringSidebar(props: {
       return { user: ele.userInput, assistant: ele.chatbotResponse };
     })
   );
+  const [isApplyChangesDisabled, changeIsApplyChangesDisabled] =
+    useState<boolean>(true);
 
+  // function
   const handleChangeTemplate = (event: SelectChangeEvent) => {
     changeTemplate(event.target.value as string);
     const selectedTemplate = templates.find(
@@ -81,6 +86,19 @@ function PromptEngineeringSidebar(props: {
       return newExamples;
     });
   };
+
+  // effect
+  useEffect(() => {
+    if (
+      systemPrompt !== props.activeSystemPrompt ||
+      JSON.stringify(examples) !== JSON.stringify(props.activeExamples)
+    ) {
+      changeIsApplyChangesDisabled(false);
+    }
+  }, [systemPrompt, examples]);
+
+  // misc
+
   return (
     <Drawer
       open={props.isPromptEngineeringSidebarOpen}
@@ -100,7 +118,9 @@ function PromptEngineeringSidebar(props: {
           </IconButton>
         </div>
 
-        <Button variant="contained">Apply changes</Button>
+        <Button variant="contained" disabled={isApplyChangesDisabled}>
+          Apply changes
+        </Button>
         <Button
           variant="outlined"
           color="warning"

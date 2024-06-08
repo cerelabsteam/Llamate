@@ -56,6 +56,8 @@ function App() {
           changeIsPromptEngineeringSidebarOpen={
             changeIsPromptEngineeringSidebarOpen
           }
+          activeSystemPrompt={activeSystemPrompt}
+          activeExamples={activeExamples}
         />
         <ThemeToggleFAB
           handleThemeToggle={handleThemeToggle}
