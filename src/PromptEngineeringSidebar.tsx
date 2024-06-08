@@ -1,6 +1,12 @@
 import "./stylesheets/PromptEngineeringSidebar.css";
 
-import { Dispatch, SetStateAction, useEffect, useState } from "react";
+import {
+  Dispatch,
+  FormEvent,
+  SetStateAction,
+  useEffect,
+  useState
+} from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -19,7 +25,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Typography,
+  Typography
 } from "@mui/material";
 
 import templates from "./configs/templates";
@@ -30,6 +36,8 @@ function PromptEngineeringSidebar(props: {
   changeIsPromptEngineeringSidebarOpen: Dispatch<SetStateAction<boolean>>;
   activeSystemPrompt: string;
   activeExamples: Examples;
+  changeActiveSystemPrompt: Dispatch<SetStateAction<string>>;
+  changeActiveExamples: Dispatch<SetStateAction<Examples>>;
 }) {
   // state
   const [template, changeTemplate] = useState(templates[0].id);
@@ -86,6 +94,12 @@ function PromptEngineeringSidebar(props: {
       return newExamples;
     });
   };
+  const handleApplyChanges = (e: FormEvent) => {
+    e.preventDefault();
+    props.changeActiveSystemPrompt(systemPrompt);
+    props.changeActiveExamples(examples);
+    props.changeIsPromptEngineeringSidebarOpen(false);
+  };
 
   // effect
   useEffect(() => {
@@ -106,7 +120,7 @@ function PromptEngineeringSidebar(props: {
         props.changeIsPromptEngineeringSidebarOpen(false);
       }}
     >
-      <form className="PromptEngineeringSidebar">
+      <form className="PromptEngineeringSidebar" onSubmit={handleApplyChanges}>
         <div className="PromptEngineeringSidebar-HeadingContainer">
           <Typography variant="h6" noWrap component="div">
             Setup
@@ -118,7 +132,11 @@ function PromptEngineeringSidebar(props: {
           </IconButton>
         </div>
 
-        <Button variant="contained" disabled={isApplyChangesDisabled}>
+        <Button
+          type="submit"
+          variant="contained"
+          disabled={isApplyChangesDisabled}
+        >
           Apply changes
         </Button>
         <Button

@@ -58,6 +58,8 @@ function App() {
           }
           activeSystemPrompt={activeSystemPrompt}
           activeExamples={activeExamples}
+          changeActiveSystemPrompt={changeActiveSystemPrompt}
+          changeActiveExamples={changeActiveExamples}
         />
         <ThemeToggleFAB
           handleThemeToggle={handleThemeToggle}
