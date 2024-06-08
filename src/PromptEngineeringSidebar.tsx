@@ -101,6 +101,11 @@ function PromptEngineeringSidebar(props: {
     props.changeIsPromptEngineeringSidebarOpen(false);
   };
 
+  const handleReset = () => {
+    changeSystemPrompt(props.activeSystemPrompt);
+    changeExamples(props.activeExamples);
+  };
+
   // effect
   useEffect(() => {
     if (
@@ -139,11 +144,7 @@ function PromptEngineeringSidebar(props: {
         >
           Apply changes
         </Button>
-        <Button
-          variant="outlined"
-          color="warning"
-          onClick={() => props.changeIsPromptEngineeringSidebarOpen(false)}
-        >
+        <Button variant="outlined" color="warning" onClick={handleReset}>
           Reset
         </Button>
         <FormControl fullWidth>
