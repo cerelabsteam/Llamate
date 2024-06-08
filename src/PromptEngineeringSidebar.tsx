@@ -163,7 +163,7 @@ function PromptEngineeringSidebar(props: {
         </Button>
         {examples.map((example, idx) => {
           return (
-            <Accordion>
+            <Accordion key={idx}>
               <AccordionSummary
                 expandIcon={<ExpandMoreIcon />}
                 aria-controls="panel1-content"
