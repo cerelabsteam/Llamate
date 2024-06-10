@@ -2,14 +2,14 @@ import "./stylesheets/App.css";
 
 import { useState } from "react";
 
-import MenuIcon from "@mui/icons-material/Menu";
-import { IconButton, Paper } from "@mui/material";
+import { Paper } from "@mui/material";
 import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Chat from "./Chat";
 import templates from "./configs/templates";
 import uiConfig from "./configs/ui";
+import CustomAppBar from "./CustomAppBar";
 import CustomSnackbar from "./CustomSnackbar";
 import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 import ThemeToggleFAB from "./ThemeToggleFAB";
@@ -38,8 +38,16 @@ function App() {
     useState<AlertProps["severity"]>("info");
   const [alertVariant, changeAlertVariant] = useState<AlertProps["variant"]>();
   const [showAlertTitle, changeShowAlertTitle] = useState(false);
-  // functions
+  const [systemPrompt, changeSystemPrompt] = useState<string>(
+    templates[0].systemPrompt
+  );
+  const [examples, changeExamples] = useState<Examples>(
+    templates[0].fewShotExamples.map((ele) => {
+      return { user: ele.userInput, assistant: ele.chatbotResponse };
+    })
+  );
 
+  // functions
   const handleThemeToggle = () => {
     if (currentThemePalette === "dark") {
       changeCurrentThemePalette("light");
@@ -79,9 +87,18 @@ function App() {
     <ThemeProvider theme={darkTheme}>
       <CssBaseline />
       <Paper square className="App">
-        <IconButton onClick={() => changeIsPromptEngineeringSidebarOpen(true)}>
-          <MenuIcon />
-        </IconButton>
+        <CustomAppBar
+          changeIsPromptEngineeringSidebarOpen={
+            changeIsPromptEngineeringSidebarOpen
+          }
+          activeSystemPrompt={activeSystemPrompt}
+          activeExamples={activeExamples}
+          changeActiveSystemPrompt={changeActiveSystemPrompt}
+          changeActiveExamples={changeActiveExamples}
+          handleSnackbarOpen={handleSnackbarOpen}
+          changeSystemPrompt={changeSystemPrompt}
+          changeExamples={changeExamples}
+        />
         <Chat
           activeSystemPrompt={activeSystemPrompt}
           activeExamples={activeExamples}
@@ -96,6 +113,10 @@ function App() {
           changeActiveSystemPrompt={changeActiveSystemPrompt}
           changeActiveExamples={changeActiveExamples}
           handleSnackbarOpen={handleSnackbarOpen}
+          systemPrompt={systemPrompt}
+          changeSystemPrompt={changeSystemPrompt}
+          examples={examples}
+          changeExamples={changeExamples}
         />
         <ThemeToggleFAB
           handleThemeToggle={handleThemeToggle}
