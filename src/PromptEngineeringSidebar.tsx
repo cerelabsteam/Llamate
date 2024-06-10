@@ -5,7 +5,7 @@ import {
   FormEvent,
   SetStateAction,
   useEffect,
-  useState
+  useState,
 } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
@@ -25,7 +25,7 @@ import {
   Select,
   SelectChangeEvent,
   TextField,
-  Typography
+  Typography,
 } from "@mui/material";
 
 import templates from "./configs/templates";
@@ -46,17 +46,13 @@ function PromptEngineeringSidebar(props: {
     alertVariant?: AlertProps["variant"],
     showAlertTitle?: boolean
   ) => void;
+  systemPrompt: string;
+  changeSystemPrompt: Dispatch<SetStateAction<string>>;
+  examples: Examples;
+  changeExamples: Dispatch<SetStateAction<Examples>>;
 }) {
   // state
   const [template, changeTemplate] = useState(templates[0].id);
-  const [systemPrompt, changeSystemPrompt] = useState<string>(
-    templates[0].systemPrompt
-  );
-  const [examples, changeExamples] = useState<Examples>(
-    templates[0].fewShotExamples.map((ele) => {
-      return { user: ele.userInput, assistant: ele.chatbotResponse };
-    })
-  );
   const [isApplyChangesDisabled, changeIsApplyChangesDisabled] =
     useState<boolean>(true);
 
@@ -67,8 +63,8 @@ function PromptEngineeringSidebar(props: {
       (ele) => ele.id === event.target.value
     );
     if (selectedTemplate) {
-      changeSystemPrompt(selectedTemplate.systemPrompt);
-      changeExamples(
+      props.changeSystemPrompt(selectedTemplate.systemPrompt);
+      props.changeExamples(
         selectedTemplate.fewShotExamples.map((ele) => {
           return { user: ele.userInput, assistant: ele.chatbotResponse };
         })
@@ -78,14 +74,14 @@ function PromptEngineeringSidebar(props: {
     }
   };
   const handleAddExample = () => {
-    changeExamples((oldExamples) => {
+    props.changeExamples((oldExamples) => {
       const newExamples: Examples = JSON.parse(JSON.stringify(oldExamples));
       newExamples.push({ user: "", assistant: "" });
       return newExamples;
     });
   };
   const handleExampleDelete = (idx: number) => {
-    changeExamples((oldExamples) => {
+    props.changeExamples((oldExamples) => {
       const newExamples: Examples = JSON.parse(JSON.stringify(oldExamples));
       newExamples.splice(idx, 1);
       return newExamples;
@@ -96,7 +92,7 @@ function PromptEngineeringSidebar(props: {
     idx: number,
     category: keyof Example
   ) => {
-    changeExamples((oldExamples) => {
+    props.changeExamples((oldExamples) => {
       const newExamples: Examples = JSON.parse(JSON.stringify(oldExamples));
       newExamples[idx][category] = text;
       return newExamples;
@@ -104,29 +100,29 @@ function PromptEngineeringSidebar(props: {
   };
   const handleApplyChanges = (e: FormEvent) => {
     e.preventDefault();
-    props.changeActiveSystemPrompt(systemPrompt);
-    props.changeActiveExamples(examples);
+    props.changeActiveSystemPrompt(props.systemPrompt);
+    props.changeActiveExamples(props.examples);
     props.changeIsPromptEngineeringSidebarOpen(false);
 
     props.handleSnackbarOpen("Successfully submitted", "success");
   };
 
   const handleReset = () => {
-    changeSystemPrompt(props.activeSystemPrompt);
-    changeExamples(props.activeExamples);
+    props.changeSystemPrompt(props.activeSystemPrompt);
+    props.changeExamples(props.activeExamples);
   };
 
   // effect
   useEffect(() => {
     if (
-      systemPrompt !== props.activeSystemPrompt ||
-      JSON.stringify(examples) !== JSON.stringify(props.activeExamples)
+      props.systemPrompt !== props.activeSystemPrompt ||
+      JSON.stringify(props.examples) !== JSON.stringify(props.activeExamples)
     ) {
       changeIsApplyChangesDisabled(false);
     } else {
       changeIsApplyChangesDisabled(true);
     }
-  }, [systemPrompt, examples]);
+  }, [props.systemPrompt, props.examples]);
 
   // misc
 
@@ -183,8 +179,8 @@ function PromptEngineeringSidebar(props: {
           label="System message"
           multiline
           rows={4}
-          value={systemPrompt}
-          onChange={(e) => changeSystemPrompt(e.target.value)}
+          value={props.systemPrompt}
+          onChange={(e) => props.changeSystemPrompt(e.target.value)}
         />
         <Button
           variant="outlined"
@@ -193,7 +189,7 @@ function PromptEngineeringSidebar(props: {
         >
           Add example
         </Button>
-        {examples.map((example, idx) => {
+        {props.examples.map((example, idx) => {
           return (
             <Accordion key={idx}>
               <AccordionSummary
