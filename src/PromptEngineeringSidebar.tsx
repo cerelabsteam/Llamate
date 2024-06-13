@@ -103,7 +103,7 @@ function PromptEngineeringSidebar(props: {
     props.changeActiveSystemPrompt(props.systemPrompt);
     props.changeActiveExamples(props.examples);
     props.changeIsPromptEngineeringSidebarOpen(false);
-
+    changeIsApplyChangesDisabled(true);
     props.handleSnackbarOpen("Successfully submitted", "success");
   };
 
