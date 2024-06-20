@@ -15,15 +15,25 @@ import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 import ThemeToggleFAB from "./ThemeToggleFAB";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
-import type { AlertProps } from "@mui/material";
+import type { AlertProps, PaletteMode } from "@mui/material";
 
 function App() {
+  let tempThemePalette: PaletteMode | undefined;
+  const savedTheme = localStorage.getItem("savedTheme");
+  if (savedTheme == null) {
+    tempThemePalette = uiConfig.defaultThemePalette;
+  } else if (savedTheme == "light")
+    tempThemePalette = uiConfig.lightThemePalette;
+  else savedTheme == "dark";
+  {
+    tempThemePalette = uiConfig.darkThemePalette;
+  }
+
   // state
   const [isPromptEngineeringSidebarOpen, changeIsPromptEngineeringSidebarOpen] =
     useState(false);
-  const [currentThemePalette, changeCurrentThemePalette] = useState(
-    uiConfig.defaultThemePalette
-  );
+  const [currentThemePalette, changeCurrentThemePalette] =
+    useState(tempThemePalette);
   const [activeSystemPrompt, changeActiveSystemPrompt] = useState<string>(
     templates[0].systemPrompt
   );
@@ -51,8 +61,10 @@ function App() {
   const handleThemeToggle = () => {
     if (currentThemePalette === "dark") {
       changeCurrentThemePalette("light");
+      localStorage.setItem("savedTheme", "light");
     } else {
       changeCurrentThemePalette("dark");
+      localStorage.setItem("savedTheme", "dark");
     }
   };
 
