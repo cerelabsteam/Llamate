@@ -30,7 +30,7 @@ function App() {
     );
   } else {
     try {
-      tempThemePalette = savedTheme as PaletteMode;
+      tempThemePalette = JSON.parse(savedTheme) as PaletteMode;
     } catch {
       console.error(`Invalid theme palette: ${savedTheme}`);
       tempThemePalette = uiConfig.defaultThemePalette;
