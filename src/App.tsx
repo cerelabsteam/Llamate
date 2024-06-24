@@ -7,6 +7,7 @@ import CssBaseline from "@mui/material/CssBaseline";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 
 import Chat from "./Chat";
+import localStorageConfig from "./configs/localStorage";
 import templates from "./configs/templates";
 import uiConfig from "./configs/ui";
 import CustomAppBar from "./CustomAppBar";
@@ -15,15 +16,36 @@ import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 import ThemeToggleFAB from "./ThemeToggleFAB";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
-import type { AlertProps } from "@mui/material";
-
+import type { AlertProps, PaletteMode, PaletteOptions } from "@mui/material";
 function App() {
+  let tempThemePalette: PaletteOptions["mode"];
+
+  const savedTheme = localStorage.getItem(localStorageConfig.themeKey);
+  if (savedTheme === null) {
+    tempThemePalette = uiConfig.defaultThemePalette;
+
+    localStorage.setItem(
+      localStorageConfig.themeKey,
+      JSON.stringify(uiConfig.defaultThemePalette)
+    );
+  } else {
+    try {
+      tempThemePalette = savedTheme as PaletteMode;
+    } catch {
+      console.error(`Invalid theme palette: ${savedTheme}`);
+      tempThemePalette = uiConfig.defaultThemePalette;
+      localStorage.setItem(
+        localStorageConfig.themeKey,
+        JSON.stringify(uiConfig.defaultThemePalette)
+      );
+    }
+  }
+
   // state
   const [isPromptEngineeringSidebarOpen, changeIsPromptEngineeringSidebarOpen] =
     useState(false);
-  const [currentThemePalette, changeCurrentThemePalette] = useState(
-    uiConfig.defaultThemePalette
-  );
+  const [currentThemePalette, changeCurrentThemePalette] =
+    useState(tempThemePalette);
   const [activeSystemPrompt, changeActiveSystemPrompt] = useState<string>(
     templates[0].systemPrompt
   );
@@ -51,8 +73,10 @@ function App() {
   const handleThemeToggle = () => {
     if (currentThemePalette === "dark") {
       changeCurrentThemePalette("light");
+      localStorage.setItem(localStorageConfig.themeKey, "light");
     } else {
       changeCurrentThemePalette("dark");
+      localStorage.setItem(localStorageConfig.themeKey, "dark");
     }
   };
 
