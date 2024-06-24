@@ -1,7 +1,7 @@
 import LocalStorageConfig from "../types/configs/LocalStorage";
 
 const localStorageConfig: LocalStorageConfig = {
-  themeKey: "my_savedTheme",
+  themeKey: "Llamate_defaultTheme",
 };
 
 export default localStorageConfig;
