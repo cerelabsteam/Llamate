@@ -73,10 +73,13 @@ function App() {
   const handleThemeToggle = () => {
     if (currentThemePalette === "dark") {
       changeCurrentThemePalette("light");
-      localStorage.setItem(localStorageConfig.themeKey, "light");
+      localStorage.setItem(
+        localStorageConfig.themeKey,
+        JSON.stringify("light")
+      );
     } else {
       changeCurrentThemePalette("dark");
-      localStorage.setItem(localStorageConfig.themeKey, "dark");
+      localStorage.setItem(localStorageConfig.themeKey, JSON.stringify("dark"));
     }
   };
 
