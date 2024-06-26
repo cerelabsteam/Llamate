@@ -1,12 +1,6 @@
 import "./stylesheets/PromptEngineeringSidebar.css";
 
-import {
-  Dispatch,
-  FormEvent,
-  SetStateAction,
-  useEffect,
-  useState,
-} from "react";
+import React, { FormEvent, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,34 +23,24 @@ import {
 } from "@mui/material";
 
 import templates from "./configs/templates";
-import { Example, Examples } from "./types/PromptEngineeringSidebar";
+import ConfirmationDialog from "./ConfirmationDialog";
+import {
+  Example,
+  Examples,
+  PromptEngineeringSidebarProps,
+} from "./types/PromptEngineeringSidebar";
 
 import type { AlertProps } from "@mui/material";
 
-function PromptEngineeringSidebar(props: {
-  isPromptEngineeringSidebarOpen: boolean;
-  changeIsPromptEngineeringSidebarOpen: Dispatch<SetStateAction<boolean>>;
-  activeSystemPrompt: string;
-  activeExamples: Examples;
-  changeActiveSystemPrompt: Dispatch<SetStateAction<string>>;
-  changeActiveExamples: Dispatch<SetStateAction<Examples>>;
-  handleSnackbarOpen: (
-    snackbarMessage: string,
-    alertSeverity: AlertProps["severity"],
-    alertVariant?: AlertProps["variant"],
-    showAlertTitle?: boolean
-  ) => void;
-  systemPrompt: string;
-  changeSystemPrompt: Dispatch<SetStateAction<string>>;
-  examples: Examples;
-  changeExamples: Dispatch<SetStateAction<Examples>>;
-}) {
-  // state
+function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
   const [template, changeTemplate] = useState(templates[0].id);
   const [isApplyChangesDisabled, changeIsApplyChangesDisabled] =
     useState<boolean>(true);
+  const [isResetDisabled, changeIsResetDisabled] = useState<boolean>(true);
+  const [isApplyChangesDialogOpen, setIsApplyChangesDialogOpen] =
+    useState(false);
+  const [isResetDialogOpen, setIsResetDialogOpen] = useState(false);
 
-  // function
   const handleChangeTemplate = (event: SelectChangeEvent) => {
     changeTemplate(event.target.value as string);
     const selectedTemplate = templates.find(
@@ -65,14 +49,21 @@ function PromptEngineeringSidebar(props: {
     if (selectedTemplate) {
       props.changeSystemPrompt(selectedTemplate.systemPrompt);
       props.changeExamples(
-        selectedTemplate.fewShotExamples.map((ele) => {
-          return { user: ele.userInput, assistant: ele.chatbotResponse };
-        })
+        selectedTemplate.fewShotExamples.map((ele) => ({
+          user: ele.userInput,
+          assistant: ele.chatbotResponse,
+        }))
       );
     } else {
       console.error("Invalid template id: " + event.target.value);
     }
   };
+
+  const confirmApplyChanges = (e: FormEvent) => {
+    e.preventDefault();
+    setIsApplyChangesDialogOpen(true);
+  };
+
   const handleAddExample = () => {
     props.changeExamples((oldExamples) => {
       const newExamples: Examples = JSON.parse(JSON.stringify(oldExamples));
@@ -98,42 +89,45 @@ function PromptEngineeringSidebar(props: {
       return newExamples;
     });
   };
-  const handleApplyChanges = (e: FormEvent) => {
-    e.preventDefault();
+
+  const handleApplyChanges = () => {
     props.changeActiveSystemPrompt(props.systemPrompt);
     props.changeActiveExamples(props.examples);
     props.changeIsPromptEngineeringSidebarOpen(false);
     changeIsApplyChangesDisabled(true);
+    changeIsResetDisabled(true);
     props.handleSnackbarOpen("Successfully submitted", "success");
+    setIsApplyChangesDialogOpen(false);
   };
 
-  const handleReset = () => {
+  const confirmReset = () => {
+    setIsResetDialogOpen(true);
+  };
+
+  const resetConfirmed = () => {
     props.changeSystemPrompt(props.activeSystemPrompt);
     props.changeExamples(props.activeExamples);
+    setIsResetDialogOpen(false);
   };
-
-  // effect
   useEffect(() => {
-    if (
+    const isChanged =
       props.systemPrompt !== props.activeSystemPrompt ||
-      JSON.stringify(props.examples) !== JSON.stringify(props.activeExamples)
-    ) {
-      changeIsApplyChangesDisabled(false);
-    } else {
-      changeIsApplyChangesDisabled(true);
-    }
-  }, [props.systemPrompt, props.examples]);
-
-  // misc
+      JSON.stringify(props.examples) !== JSON.stringify(props.activeExamples);
+    changeIsApplyChangesDisabled(!isChanged);
+    changeIsResetDisabled(!isChanged);
+  }, [
+    props.systemPrompt,
+    props.examples,
+    props.activeSystemPrompt,
+    props.activeExamples,
+  ]);
 
   return (
     <Drawer
       open={props.isPromptEngineeringSidebarOpen}
-      onClose={() => {
-        props.changeIsPromptEngineeringSidebarOpen(false);
-      }}
+      onClose={() => props.changeIsPromptEngineeringSidebarOpen(false)}
     >
-      <form className="PromptEngineeringSidebar" onSubmit={handleApplyChanges}>
+      <form className="PromptEngineeringSidebar" onSubmit={confirmApplyChanges}>
         <div className="PromptEngineeringSidebar-HeadingContainer">
           <Typography variant="h6" noWrap component="div">
             Setup
@@ -152,10 +146,15 @@ function PromptEngineeringSidebar(props: {
         >
           Apply changes
         </Button>
-
-        <Button variant="outlined" color="warning" onClick={handleReset}>
+        <Button
+          variant="outlined"
+          color="warning"
+          onClick={confirmReset}
+          disabled={isResetDisabled}
+        >
           Reset
         </Button>
+
         <FormControl fullWidth>
           <InputLabel id="system-template-label">
             Use a system message template
@@ -166,15 +165,14 @@ function PromptEngineeringSidebar(props: {
             label="Use a system message template"
             onChange={handleChangeTemplate}
           >
-            {templates.map((template) => {
-              return (
-                <MenuItem value={template.id} key={template.id}>
-                  {template.humanReadableName}
-                </MenuItem>
-              );
-            })}
+            {templates.map((template) => (
+              <MenuItem key={template.id} value={template.id}>
+                {template.humanReadableName}
+              </MenuItem>
+            ))}
           </Select>
         </FormControl>
+
         <TextField
           label="System message"
           multiline
@@ -182,55 +180,89 @@ function PromptEngineeringSidebar(props: {
           value={props.systemPrompt}
           onChange={(e) => props.changeSystemPrompt(e.target.value)}
         />
+
         <Button
           variant="outlined"
           startIcon={<AddIcon />}
-          onClick={handleAddExample}
+          onClick={() =>
+            props.changeExamples([
+              ...props.examples,
+              { user: "", assistant: "" },
+            ])
+          }
         >
           Add example
         </Button>
-        {props.examples.map((example, idx) => {
-          return (
-            <Accordion key={idx}>
-              <AccordionSummary
-                expandIcon={<ExpandMoreIcon />}
-                aria-controls="panel1-content"
-                id="panel1-header"
+
+        {props.examples.map((example, idx) => (
+          <Accordion key={idx}>
+            <AccordionSummary
+              expandIcon={<ExpandMoreIcon />}
+              aria-controls="panel1-content"
+              id="panel1-header"
+            >
+              Example {idx + 1}
+            </AccordionSummary>
+            <AccordionDetails>
+              <TextField
+                required
+                value={example.user}
+                multiline
+                rows={4}
+                label="User:"
+                onChange={(e) =>
+                  props.changeExamples(
+                    props.examples.map((ex, i) =>
+                      i === idx ? { ...ex, user: e.target.value } : ex
+                    )
+                  )
+                }
+              />
+              <TextField
+                required
+                value={example.assistant}
+                multiline
+                rows={4}
+                label="Assistant:"
+                onChange={(e) =>
+                  props.changeExamples(
+                    props.examples.map((ex, i) =>
+                      i === idx ? { ...ex, assistant: e.target.value } : ex
+                    )
+                  )
+                }
+              />
+            </AccordionDetails>
+            <AccordionActions>
+              <Button
+                color="error"
+                onClick={() =>
+                  props.changeExamples(
+                    props.examples.filter((_, i) => i !== idx)
+                  )
+                }
               >
-                Example {idx + 1}
-              </AccordionSummary>
-              <AccordionDetails className="PromptEngineeringSidebar-ExampleAccordionDetails">
-                <TextField
-                  value={example.user}
-                  multiline
-                  rows={4}
-                  label="User:"
-                  onChange={(e) => {
-                    handleChangeExampleTextField(e.target.value, idx, "user");
-                  }}
-                />
-                <TextField
-                  value={example.assistant}
-                  multiline
-                  rows={4}
-                  label="Assistant:"
-                  onChange={(e) => {
-                    handleChangeExampleTextField(
-                      e.target.value,
-                      idx,
-                      "assistant"
-                    );
-                  }}
-                />
-              </AccordionDetails>
-              <AccordionActions>
-                <Button color="error" onClick={() => handleExampleDelete(idx)}>
-                  Delete
-                </Button>
-              </AccordionActions>
-            </Accordion>
-          );
-        })}
+                Delete
+              </Button>
+            </AccordionActions>
+          </Accordion>
+        ))}
+
+        <ConfirmationDialog
+          open={isApplyChangesDialogOpen}
+          onClose={() => setIsApplyChangesDialogOpen(false)}
+          onConfirm={handleApplyChanges}
+          title="Confirm Apply Changes"
+          content="Are you sure you want to apply these changes?"
+        />
+
+        <ConfirmationDialog
+          open={isResetDialogOpen}
+          onClose={() => setIsResetDialogOpen(false)}
+          onConfirm={resetConfirmed}
+          title="Confirm Reset"
+          content="Are you sure you want to reset the changes?"
+        />
       </form>
     </Drawer>
   );
