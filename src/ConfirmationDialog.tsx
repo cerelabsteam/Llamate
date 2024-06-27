@@ -9,13 +9,7 @@ import {
   DialogTitle,
 } from "@mui/material";
 
-interface ConfirmationDialogProps {
-  open: boolean;
-  onClose: () => void;
-  onConfirm: () => void;
-  title: string;
-  content: string;
-}
+import { ConfirmationDialogProps } from "./types/PromptEngineeringSidebar"; // Import the interface
 
 const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   open,
@@ -23,6 +17,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
   onConfirm,
   title,
   content,
+  cancelLabel = "Cancel",
+  confirmLabel = "Confirm",
 }) => {
   return (
     <Dialog
@@ -38,12 +34,8 @@ const ConfirmationDialog: React.FC<ConfirmationDialogProps> = ({
         </DialogContentText>
       </DialogContent>
       <DialogActions>
-        <Button onClick={onClose} color="primary">
-          Cancel
-        </Button>
-        <Button onClick={onConfirm} color="primary">
-          Confirm
-        </Button>
+        <Button onClick={onClose}>{cancelLabel}</Button>
+        <Button onClick={onConfirm}>{confirmLabel}</Button>
       </DialogActions>
     </Dialog>
   );

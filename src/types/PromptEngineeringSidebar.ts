@@ -27,3 +27,13 @@ export interface PromptEngineeringSidebarProps {
   examples: Examples;
   changeExamples: Dispatch<SetStateAction<Examples>>;
 }
+
+export interface ConfirmationDialogProps {
+  open: boolean;
+  onClose: () => void;
+  onConfirm: () => void;
+  title: string;
+  content: string;
+  cancelLabel?: string;
+  confirmLabel?: string;
+}

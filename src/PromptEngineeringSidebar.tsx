@@ -198,8 +198,8 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
           <Accordion key={idx}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls="panel1-content"
-              id="panel1-header"
+              aria-controls={`panel${idx}-content`} // Updated to include idx
+              id={`panel${idx}-header`} // Updated to include idx
             >
               Example {idx + 1}
             </AccordionSummary>
@@ -254,6 +254,8 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
           onConfirm={handleApplyChanges}
           title="Confirm Apply Changes"
           content="Are you sure you want to apply these changes?"
+          cancelLabel="Cancel"
+          confirmLabel="Confirm"
         />
 
         <ConfirmationDialog
@@ -262,6 +264,8 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
           onConfirm={resetConfirmed}
           title="Confirm Reset"
           content="Are you sure you want to reset the changes?"
+          cancelLabel="Cancel"
+          confirmLabel="Confirm"
         />
       </form>
     </Drawer>
