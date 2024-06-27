@@ -1,6 +1,6 @@
 import "./stylesheets/PromptEngineeringSidebar.css";
 
-import React, { FormEvent, useEffect, useState } from "react";
+import { FormEvent, useEffect, useState } from "react";
 
 import AddIcon from "@mui/icons-material/Add";
 import CloseIcon from "@mui/icons-material/Close";
@@ -29,8 +29,6 @@ import {
   Examples,
   PromptEngineeringSidebarProps,
 } from "./types/PromptEngineeringSidebar";
-
-import type { AlertProps } from "@mui/material";
 
 function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
   const [template, changeTemplate] = useState(templates[0].id);
@@ -184,12 +182,7 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
         <Button
           variant="outlined"
           startIcon={<AddIcon />}
-          onClick={() =>
-            props.changeExamples([
-              ...props.examples,
-              { user: "", assistant: "" },
-            ])
-          }
+          onClick={handleAddExample}
         >
           Add example
         </Button>
@@ -211,11 +204,7 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
                 rows={4}
                 label="User:"
                 onChange={(e) =>
-                  props.changeExamples(
-                    props.examples.map((ex, i) =>
-                      i === idx ? { ...ex, user: e.target.value } : ex
-                    )
-                  )
+                  handleChangeExampleTextField(e.target.value, idx, "user")
                 }
               />
               <TextField
@@ -234,14 +223,7 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
               />
             </AccordionDetails>
             <AccordionActions>
-              <Button
-                color="error"
-                onClick={() =>
-                  props.changeExamples(
-                    props.examples.filter((_, i) => i !== idx)
-                  )
-                }
-              >
+              <Button color="error" onClick={() => handleExampleDelete(idx)}>
                 Delete
               </Button>
             </AccordionActions>
