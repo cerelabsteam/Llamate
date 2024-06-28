@@ -16,10 +16,10 @@ import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
 import ThemeToggleFAB from "./ThemeToggleFAB";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
-import type { AlertProps, PaletteMode, PaletteOptions } from "@mui/material";
+import type { AlertProps, PaletteOptions } from "@mui/material";
 function App() {
+  // get stuff from local storage
   let tempThemePalette: PaletteOptions["mode"];
-
   const savedTheme = localStorage.getItem(localStorageConfig.themeKey);
   if (savedTheme === null) {
     tempThemePalette = uiConfig.defaultThemePalette;
@@ -30,7 +30,7 @@ function App() {
     );
   } else {
     try {
-      tempThemePalette = JSON.parse(savedTheme) as PaletteMode;
+      tempThemePalette = JSON.parse(savedTheme) as PaletteOptions["mode"];
     } catch {
       console.error(`Invalid theme palette: ${savedTheme}`);
       tempThemePalette = uiConfig.defaultThemePalette;
@@ -98,20 +98,16 @@ function App() {
 
   const handleSnackbarClose = () => {
     changeIsSnackbarOpen(false);
-    // changeSnackbarMessage("");
-    // changeAlertSeverity("info");
-    // changeAlertVariant("filled");
-    // changeShowAlertTitle(true);
   };
   // use effect
   // misc
-  const darkTheme = createTheme({
+  const theme = createTheme({
     palette: {
       mode: currentThemePalette,
     },
   });
   return (
-    <ThemeProvider theme={darkTheme}>
+    <ThemeProvider theme={theme}>
       <CssBaseline />
       <Paper square className="App">
         <CustomAppBar
