@@ -122,10 +122,7 @@ function App() {
           changeSystemPrompt={changeSystemPrompt}
           changeExamples={changeExamples}
         />
-        <Chat
-          activeSystemPrompt={activeSystemPrompt}
-          activeExamples={activeExamples}
-        />
+        <Chat></Chat>
         <PromptEngineeringSidebar
           isPromptEngineeringSidebarOpen={isPromptEngineeringSidebarOpen}
           changeIsPromptEngineeringSidebarOpen={
