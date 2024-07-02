@@ -1,7 +1,5 @@
 import "./stylesheets/Chat.css";
 
-import pdfMake from "pdfmake/build/pdfmake";
-import * as pdfFonts from "pdfmake/build/vfs_fonts";
 import React from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
@@ -11,8 +9,6 @@ import { Button, Paper } from "@mui/material";
 import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
@@ -38,7 +34,10 @@ function Chat() {
     setConversation([]);
   };
 
-  const handleExportChat = (): void => {
+  const handleExportChat = async (): Promise<void> => {
+    const pdfMake = (await import("pdfmake/build/pdfmake")).default;
+    const pdfFonts = await import("pdfmake/build/vfs_fonts");
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
     const chatContent = conversation.map((msg) => ({
       text: `User: ${msg.user}\nAssistant: ${msg.assistant}\n\n`,
     }));
