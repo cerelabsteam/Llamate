@@ -8,6 +8,7 @@ import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Button, Paper } from "@mui/material";
 
+import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
 
@@ -46,7 +47,9 @@ function Chat() {
       content: chatContent,
     };
 
-    pdfMake.createPdf(docDefinition).download("llamatechat.pdf");
+    pdfMake
+      .createPdf(docDefinition)
+      .download(`${brandConfig.humanReadableAppName}.pdf`);
   };
 
   return (
