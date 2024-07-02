@@ -2,10 +2,11 @@ import "./stylesheets/Chat.css";
 
 import React from "react";
 
-import CodeIcon from "@mui/icons-material/Code";
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
+import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Button, Paper } from "@mui/material";
 
+import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
 
@@ -29,14 +30,43 @@ function Chat() {
     setUserInput("");
   };
 
+  const handleClearChat = (): void => {
+    setConversation([]);
+  };
+
+  const handleExportChat = async (): Promise<void> => {
+    const pdfMake = (await import("pdfmake/build/pdfmake")).default;
+    const pdfFonts = await import("pdfmake/build/vfs_fonts");
+    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+    const chatContent = conversation.map((msg) => ({
+      text: `User: ${msg.user}\nAssistant: ${msg.assistant}\n\n`,
+    }));
+
+    const docDefinition = {
+      content: chatContent,
+    };
+
+    pdfMake
+      .createPdf(docDefinition)
+      .download(`${brandConfig.humanReadableAppName}.pdf`);
+  };
+
   return (
     <Paper square className="Chat">
       <Paper className="Chat-Button">
-        <Button variant="outlined" startIcon={<DeleteSweepIcon />}>
+        <Button
+          variant="outlined"
+          startIcon={<DeleteSweepIcon />}
+          onClick={handleClearChat}
+        >
           Clear chat
         </Button>
-        <Button variant="outlined" startIcon={<CodeIcon />}>
-          View Code
+        <Button
+          variant="outlined"
+          startIcon={<FileDownloadIcon />}
+          onClick={handleExportChat}
+        >
+          Export Chat
         </Button>
       </Paper>
       <Paper className="Chat-Display">
