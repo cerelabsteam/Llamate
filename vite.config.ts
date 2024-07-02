@@ -6,4 +6,9 @@ import react from "@vitejs/plugin-react-swc";
 export default defineConfig({
   plugins: [react()],
   base: "/Llamate/",
+  build: {
+    rollupOptions: {
+      external: ["pdfmake/build/pdfmake", "pdfmake/build/vfs_fonts"],
+    },
+  },
 });
