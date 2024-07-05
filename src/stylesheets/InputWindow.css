@@ -1,21 +1,14 @@
-.input-window {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  padding: 5px;
-}
-
-.input-container {
+.inputWindow {
   display: flex;
   align-items: center;
+  padding: 10px;
+  width: 430px;
+  padding-left: 15px;
 }
-
-.MuiTextField-root {
-  flex: 1;
+.inputWindow .MuiTextField-root {
+  flex-grow: 1;
+  margin-right: 10px;
 }
-
-.button-container {
-  display: flex;
-  align-items: center;
-  /* Adjust this value to control the spacing between the TextField and the SendIcon */
+.inputWindow .MuiIconButton-root {
+  flex-shrink: 0;
 }
