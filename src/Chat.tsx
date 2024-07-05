@@ -1,6 +1,6 @@
 import "./stylesheets/Chat.css";
 
-import React from "react";
+import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
@@ -13,6 +13,7 @@ import { Conversation, Message } from "./types/Chat";
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
   const [conversation, setConversation] = React.useState<Conversation>([]);
+  const chatDisplayRef = useRef<HTMLDivElement>(null);
 
   const handleChange = (event: React.ChangeEvent<HTMLInputElement>): void => {
     setUserInput(event.target.value);
@@ -50,6 +51,11 @@ function Chat() {
       .createPdf(docDefinition)
       .download(`${brandConfig.humanReadableAppName}.pdf`);
   };
+  useEffect(() => {
+    if (chatDisplayRef.current) {
+      chatDisplayRef.current.scrollTop = chatDisplayRef.current.scrollHeight;
+    }
+  }, [conversation]);
 
   return (
     <Paper square className="Chat">
@@ -69,11 +75,14 @@ function Chat() {
           Export Chat
         </Button>
       </Paper>
-      <Paper className="Chat-Display">
+
+      <Paper className="Chat-Display" ref={chatDisplayRef} elevation={0}>
         {conversation.map((msg, index) => (
-          <Paper key={index}>
-            <Paper>User: {msg.user}</Paper>
-            <Paper>Assistant: {msg.assistant}</Paper>
+          <Paper key={index} className="Message-Container" elevation={0}>
+            <Paper className="User-Message">User: {msg.user}</Paper>
+            <Paper className="Assistant-Message">
+              Assistant: {msg.assistant}
+            </Paper>
           </Paper>
         ))}
       </Paper>
@@ -82,6 +91,7 @@ function Chat() {
         value={userInput}
         onChange={handleChange}
         onSubmit={handleSubmit}
+        disabled={Boolean(userInput)}
       ></InputWindow>
     </Paper>
   );

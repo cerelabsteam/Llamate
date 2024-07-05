@@ -1,0 +1,62 @@
+.Chat {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  height: 90vh;
+  padding: 20px;
+}
+
+.Chat-Button {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+.Chat-Display {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-grow: 1;
+  overflow-y: auto;
+  padding: 20px;
+  border: 1px solid #ccc;
+  width: 100%;
+  max-width: 400px;
+}
+
+.Message-Container {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  animation: slideIn 0.3s ease-in-out;
+  scroll-behavior: smooth; /* Smooth scrolling */
+}
+
+.User-Message {
+  align-self: flex-end;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  margin-bottom: 10px;
+}
+
+.Assistant-Message {
+  align-self: flex-start;
+  padding: 10px;
+  border-radius: 10px;
+  max-width: 70%;
+  margin-bottom: 10px;
+}
+
+@keyframes slideIn {
+  from {
+    transform: translateY(20px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
