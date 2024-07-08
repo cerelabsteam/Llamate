@@ -10,6 +10,7 @@ import Chat from "./Chat";
 import localStorageConfig from "./configs/localStorage";
 import templates from "./configs/templates";
 import uiConfig from "./configs/ui";
+import ConfigurationSidebar from "./ConfigurationSidebar";
 import CustomAppBar from "./CustomAppBar";
 import CustomSnackbar from "./CustomSnackbar";
 import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
@@ -17,6 +18,7 @@ import ThemeToggleFAB from "./ThemeToggleFAB";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
 import type { AlertProps, PaletteOptions } from "@mui/material";
+
 function App() {
   // get stuff from local storage
   let tempThemePalette: PaletteOptions["mode"];
@@ -49,6 +51,10 @@ function App() {
   const [activeSystemPrompt, changeActiveSystemPrompt] = useState<string>(
     templates[0].systemPrompt
   );
+  const [deployment, setDeployment] = useState("");
+  const [messageHistoryLimit, setMessageHistoryLimit] = useState(20);
+  const [isConfigSidebarOpen, setIsConfigSidebarOpen] =
+    useState<boolean>(false);
   const [activeExamples, changeActiveExamples] = useState<Examples>(
     templates[0].fewShotExamples.map((ele) => {
       return { user: ele.userInput, assistant: ele.chatbotResponse };
@@ -99,6 +105,7 @@ function App() {
   const handleSnackbarClose = () => {
     changeIsSnackbarOpen(false);
   };
+
   // use effect
   // misc
   const theme = createTheme({
@@ -106,6 +113,11 @@ function App() {
       mode: currentThemePalette,
     },
   });
+
+  const handleConfigSidebarClose = () => {
+    setIsConfigSidebarOpen(false);
+  };
+
   return (
     <ThemeProvider theme={theme}>
       <CssBaseline />
@@ -121,6 +133,7 @@ function App() {
           handleSnackbarOpen={handleSnackbarOpen}
           changeSystemPrompt={changeSystemPrompt}
           changeExamples={changeExamples}
+          setIsConfigSidebarOpen={setIsConfigSidebarOpen}
         />
         <Chat></Chat>
         <PromptEngineeringSidebar
@@ -149,6 +162,14 @@ function App() {
           alertVariant={alertVariant}
           handleSnackbarClose={handleSnackbarClose}
           showAlertTitle={showAlertTitle}
+        />
+        <ConfigurationSidebar
+          isOpen={isConfigSidebarOpen}
+          onClose={handleConfigSidebarClose}
+          messageHistoryLimit={messageHistoryLimit}
+          setMessageHistoryLimit={setMessageHistoryLimit}
+          deployment={deployment}
+          setDeployment={setDeployment}
         />
       </Paper>
     </ThemeProvider>

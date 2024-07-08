@@ -191,8 +191,8 @@ function PromptEngineeringSidebar(props: PromptEngineeringSidebarProps) {
           <Accordion key={idx}>
             <AccordionSummary
               expandIcon={<ExpandMoreIcon />}
-              aria-controls={`panel${idx}-content`} // Updated to include idx
-              id={`panel${idx}-header`} // Updated to include idx
+              aria-controls={`panel${idx}-content`}
+              id={`panel${idx}-header`}
             >
               Example {idx + 1}
             </AccordionSummary>

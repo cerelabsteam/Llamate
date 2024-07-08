@@ -59,7 +59,7 @@ function Chat() {
 
   return (
     <Paper square className="Chat">
-      <Paper className="Chat-Button">
+      <div className="Chat-Button">
         <Button
           variant="outlined"
           startIcon={<DeleteSweepIcon />}
@@ -74,13 +74,15 @@ function Chat() {
         >
           Export Chat
         </Button>
-      </Paper>
+      </div>
 
       <Paper className="Chat-Display" ref={chatDisplayRef} elevation={0}>
         {conversation.map((msg, index) => (
           <Paper key={index} className="Message-Container" elevation={0}>
-            <Paper className="User-Message">User: {msg.user}</Paper>
-            <Paper className="Assistant-Message">
+            <Paper className="User-Message" color="primary">
+              User: {msg.user}
+            </Paper>
+            <Paper className="Assistant-Message" color="success">
               Assistant: {msg.assistant}
             </Paper>
           </Paper>
