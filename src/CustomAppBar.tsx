@@ -155,6 +155,8 @@ function CustomAppBar(props: {
     setIsConfigSidebarOpen(false);
   };
 
+  // effect
+  // misc
   return (
     <AppBar position="sticky">
       <Toolbar className="AppBar">
