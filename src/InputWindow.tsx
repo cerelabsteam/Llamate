@@ -49,7 +49,7 @@ export default function InputWindow({
           endAdornment: (
             <InputAdornment position="end">
               <IconButton type="submit" color="primary" disabled={!disabled}>
-                <SendIcon fontSize="small" />
+                <SendIcon fontSize="medium" />
               </IconButton>
             </InputAdornment>
           ),

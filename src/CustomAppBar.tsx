@@ -1,10 +1,11 @@
 import "./stylesheets/CustomAppBar.css";
 
-import { Dispatch, SetStateAction } from "react";
+import { Dispatch, SetStateAction, useState } from "react";
 
 import DownloadIcon from "@mui/icons-material/Download";
 import MenuIcon from "@mui/icons-material/Menu";
 import PublishIcon from "@mui/icons-material/Publish";
+import SettingsIcon from "@mui/icons-material/Settings";
 import AppBar from "@mui/material/AppBar";
 import Button from "@mui/material/Button";
 import IconButton from "@mui/material/IconButton";
@@ -14,6 +15,7 @@ import Typography from "@mui/material/Typography";
 import useMediaQuery from "@mui/material/useMediaQuery";
 
 import brandConfig from "./configs/brand";
+import ConfigurationSidebar from "./ConfigurationSidebar";
 import { SetupJson } from "./types/CustomAppBar";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
@@ -33,9 +35,11 @@ function CustomAppBar(props: {
   ) => void;
   changeSystemPrompt: Dispatch<SetStateAction<string>>;
   changeExamples: Dispatch<SetStateAction<Examples>>;
+  setIsConfigSidebarOpen: Dispatch<SetStateAction<boolean>>;
 }) {
   // state
   const isDesktopView = useMediaQuery("(min-width: 768px)");
+  const [isConfigSidebarOpen, setIsConfigSidebarOpen] = useState(false);
 
   // function
   const transformToExportFormat = (): SetupJson => {
@@ -147,9 +151,12 @@ function CustomAppBar(props: {
     return true;
   };
 
+  const handleConfigSidebarClose = () => {
+    setIsConfigSidebarOpen(false);
+  };
+
   // effect
   // misc
-
   return (
     <AppBar position="sticky">
       <Toolbar className="AppBar">
@@ -207,8 +214,29 @@ function CustomAppBar(props: {
               </IconButton>
             </Tooltip>
           )}
+          <Tooltip title="Settings">
+            <IconButton
+              className="AppBar-Elements-Buttons"
+              color="inherit"
+              onClick={() => props.setIsConfigSidebarOpen(true)}
+            >
+              <SettingsIcon />
+            </IconButton>
+          </Tooltip>
         </div>
       </Toolbar>
+      <ConfigurationSidebar
+        isOpen={isConfigSidebarOpen}
+        onClose={handleConfigSidebarClose}
+        messageHistoryLimit={0}
+        setMessageHistoryLimit={(value: React.SetStateAction<number>) => {
+          console.log(value);
+        }}
+        deployment=""
+        setDeployment={(value: React.SetStateAction<string>) => {
+          console.log(value);
+        }}
+      />
     </AppBar>
   );
 }
