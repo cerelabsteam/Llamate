@@ -1,4 +1,5 @@
 .Chat {
+  position: absolute;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -8,7 +9,7 @@
 
 .Chat-Button {
   display: flex;
-  justify-content: center;
+  justify-content: right;
   gap: 20px;
   width: 100%;
   margin-bottom: 20px;
@@ -22,8 +23,7 @@
   overflow-y: auto;
   padding: 20px;
   border: 1px solid #2074d4;
-  width: 100%;
-  max-width: 400px;
+  width: 1472px;
 }
 
 .Message-Container {
@@ -31,7 +31,7 @@
   flex-direction: column;
   width: 100%;
   animation: slideIn 0.3s ease-in-out;
-  scroll-behavior: smooth; /* Smooth scrolling */
+  scroll-behavior: smooth;
 }
 
 .User-Message {
@@ -39,7 +39,6 @@
   padding: 10px;
   max-width: 70%;
   margin-bottom: 10px;
-  background-color: #bdddf7 !important;
 }
 
 .Assistant-Message {
@@ -47,7 +46,6 @@
   padding: 10px;
   max-width: 70%;
   margin-bottom: 10px;
-  background-color: #bdddf7 !important;
 }
 
 @keyframes slideIn {
@@ -59,4 +57,22 @@
     transform: translateY(0);
     opacity: 1;
   }
+}
+
+.Chat-Display table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 10px 0;
+}
+
+.Chat-Display th,
+.Chat-Display td {
+  border: 1px solid #2074d4;
+  padding: 8px;
+  text-align: left;
+}
+
+.Chat-Display th {
+  background-color: #2074d4;
+  font-weight: bold;
 }

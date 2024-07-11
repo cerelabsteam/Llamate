@@ -16,10 +16,11 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 
 import brandConfig from "./configs/brand";
 import ConfigurationSidebar from "./ConfigurationSidebar";
+import ThemeToggleFAB from "./ThemeToggleFAB";
 import { SetupJson } from "./types/CustomAppBar";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
-import type { AlertProps } from "@mui/material";
+import type { AlertProps, PaletteOptions } from "@mui/material";
 
 function CustomAppBar(props: {
   changeIsPromptEngineeringSidebarOpen: Dispatch<SetStateAction<boolean>>;
@@ -36,6 +37,8 @@ function CustomAppBar(props: {
   changeSystemPrompt: Dispatch<SetStateAction<string>>;
   changeExamples: Dispatch<SetStateAction<Examples>>;
   setIsConfigSidebarOpen: Dispatch<SetStateAction<boolean>>;
+  handleThemeToggle: () => void;
+  currentThemePalette: PaletteOptions["mode"];
 }) {
   // state
   const isDesktopView = useMediaQuery("(min-width: 768px)");
@@ -214,9 +217,13 @@ function CustomAppBar(props: {
               </IconButton>
             </Tooltip>
           )}
+          <ThemeToggleFAB
+            handleThemeToggle={props.handleThemeToggle}
+            currentThemePalette={props.currentThemePalette}
+          />
           <Tooltip title="Settings">
             <IconButton
-              className="AppBar-Elements-Buttons"
+              className="AppBar-Elements-SettingButton"
               color="inherit"
               onClick={() => props.setIsConfigSidebarOpen(true)}
             >

@@ -1,12 +1,16 @@
 .AppBar {
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 1px;
 }
 
 .AppBar-Elements {
   margin-left: auto;
   display: flex;
   flex-direction: row;
-  gap: 1rem;
+  gap: 1px;
+}
+.AppBar-Elements-Buttons {
+  position: absolute;
+  right: 45px;
 }
