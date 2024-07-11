@@ -1,5 +1,6 @@
 import "./stylesheets/Chat.css";
 
+import MarkdownIt from "markdown-it";
 import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
@@ -9,6 +10,8 @@ import { Button, Paper } from "@mui/material";
 import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
+
+const mdParser = new MarkdownIt();
 
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
@@ -23,7 +26,8 @@ function Chat() {
     event.preventDefault();
     const newMessage: Message = {
       user: userInput,
-      assistant: "Hi there!",
+      assistant:
+        "Yes, you're right. Using markdown syntax, I can lay out the information in a table-like structure. Here's an example for the Indian Income Tax slabs for FY 2021-22 (AY 2022-23):\n\nFor Individuals (below 60 years) & HUF:\n\n| Income | Tax Rate |\n|---|---|\n| Up to ₹2.5 lakhs | Nil |\n| ₹2.5 lakhs to ₹5 lakhs | 5% |\n| ₹5 lakhs to ₹10 lakhs | 20% |\n| Above ₹10 lakhs | 30% |\n\nFor Senior Citizens (60 years to 80 years):\n\n| Income | Tax Rate |\n|---|---|\n| Up to ₹3 lakhs | Nil |\n| ₹3 lakhs to ₹5 lakhs | 5% |\n| ₹5 lakhs to ₹10 lakhs | 20% |\n| Above ₹10 lakhs | 30% |\n\nFor Super Senior Citizens (Above 80 years):\n\n| Income | Tax Rate |\n|---|---|\n| Up to ₹5 lakhs | Nil |\n| ₹5 lakhs to ₹10 lakhs | 20% |\n| Above ₹10 lakhs | 30% |\n\nPlease note that these slabs are subject to changes and it's always a good idea to check the latest updates from reliable sources.",
     };
 
     const conversationsClone = JSON.parse(JSON.stringify(conversation));
@@ -51,6 +55,7 @@ function Chat() {
       .createPdf(docDefinition)
       .download(`${brandConfig.humanReadableAppName}.pdf`);
   };
+
   useEffect(() => {
     if (chatDisplayRef.current) {
       chatDisplayRef.current.scrollTop = chatDisplayRef.current.scrollHeight;
@@ -80,11 +85,15 @@ function Chat() {
         {conversation.map((msg, index) => (
           <Paper key={index} className="Message-Container" elevation={0}>
             <Paper className="User-Message" color="primary">
-              User: {msg.user}
+              {msg.user}
             </Paper>
-            <Paper className="Assistant-Message" color="success">
-              Assistant: {msg.assistant}
-            </Paper>
+            <Paper
+              className="Assistant-Message"
+              color="success"
+              dangerouslySetInnerHTML={{
+                __html: mdParser.render(msg.assistant),
+              }}
+            />
           </Paper>
         ))}
       </Paper>

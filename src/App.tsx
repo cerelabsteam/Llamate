@@ -14,7 +14,6 @@ import ConfigurationSidebar from "./ConfigurationSidebar";
 import CustomAppBar from "./CustomAppBar";
 import CustomSnackbar from "./CustomSnackbar";
 import PromptEngineeringSidebar from "./PromptEngineeringSidebar";
-import ThemeToggleFAB from "./ThemeToggleFAB";
 import { Examples } from "./types/PromptEngineeringSidebar";
 
 import type { AlertProps, PaletteOptions } from "@mui/material";
@@ -134,6 +133,8 @@ function App() {
           changeSystemPrompt={changeSystemPrompt}
           changeExamples={changeExamples}
           setIsConfigSidebarOpen={setIsConfigSidebarOpen}
+          handleThemeToggle={handleThemeToggle}
+          currentThemePalette={currentThemePalette}
         />
         <Chat></Chat>
         <PromptEngineeringSidebar
@@ -150,10 +151,6 @@ function App() {
           changeSystemPrompt={changeSystemPrompt}
           examples={examples}
           changeExamples={changeExamples}
-        />
-        <ThemeToggleFAB
-          handleThemeToggle={handleThemeToggle}
-          currentThemePalette={currentThemePalette}
         />
         <CustomSnackbar
           isSnackbarOpen={isSnackbarOpen}

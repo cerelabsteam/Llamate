@@ -15,11 +15,14 @@
     "@fontsource/roboto": "^5.0.13",
     "@mui/icons-material": "^5.15.19",
     "@mui/material": "^5.15.19",
+    "markdown-it": "^14.1.0",
+    "pdfmake": "^0.2.10",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",
     "uuid": "^9.0.1"
   },
   "devDependencies": {
+    "@types/markdown-it": "^14.1.1",
     "@types/react": "^18.2.66",
     "@types/react-dom": "^18.2.22",
     "@types/uuid": "^9.0.8",
