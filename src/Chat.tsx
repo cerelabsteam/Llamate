@@ -2,7 +2,7 @@ import "./stylesheets/Chat.css";
 
 import MuiMarkdown from "mui-markdown";
 import pdfMake from "pdfmake/build/pdfmake.js";
-import pdfFonts from "pdfmake/build/vfs_fonts";
+import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
