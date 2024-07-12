@@ -1,19 +1,14 @@
 import "./stylesheets/Chat.css";
 
 import MuiMarkdown from "mui-markdown";
-import pdfMake from "pdfmake/build/pdfmake.js";
-import pdfFonts from "pdfmake/build/vfs_fonts.js";
 import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
 import { Button, Paper } from "@mui/material";
 
-import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
-
-pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
@@ -41,30 +36,6 @@ function Chat() {
     setConversation([]);
   };
 
-  const handleExportChat = (): void => {
-    const chatContent = conversation.map((msg) => ({
-      user: `User: ${msg.user}\n`,
-      assistant: msg.assistant,
-    }));
-
-    const docDefinition = {
-      content: [
-        {
-          text: `${brandConfig.humanReadableAppName} Chat Export\n\n`,
-          style: "header",
-        },
-        ...chatContent.map((msg) => [
-          { text: msg.user, bold: true },
-          { text: msg.assistant, style: "assistantMessage" },
-        ]),
-      ],
-    };
-
-    pdfMake
-      .createPdf(docDefinition)
-      .download(`${brandConfig.humanReadableAppName}.pdf`);
-  };
-
   useEffect(() => {
     if (chatDisplayRef.current) {
       chatDisplayRef.current.scrollTop = chatDisplayRef.current.scrollHeight;
@@ -81,11 +52,7 @@ function Chat() {
         >
           Clear chat
         </Button>
-        <Button
-          variant="outlined"
-          startIcon={<FileDownloadIcon />}
-          onClick={handleExportChat}
-        >
+        <Button variant="outlined" startIcon={<FileDownloadIcon />}>
           Export Chat
         </Button>
       </div>
