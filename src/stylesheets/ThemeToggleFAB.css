@@ -1,5 +1,13 @@
 .ThemeToggleFAB {
   position: absolute !important;
-  bottom: 12.5px;
+  bottom: 12px;
   right: 67px;
+}
+
+.ThemeToggleFAB.light {
+  color: #ffffff;
+}
+
+.ThemeToggleFAB.dark {
+  color: #ffffff;
 }
