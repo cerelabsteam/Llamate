@@ -11,6 +11,9 @@ const externalDependencies = [
 export default defineConfig({
   plugins: [react()],
   base: "/Llamate/",
+  optimizeDeps: {
+    include: externalDependencies,
+  },
   build: {
     rollupOptions: {
       external: externalDependencies,
