@@ -1,7 +1,6 @@
 import "./stylesheets/Chat.css";
 
 import MuiMarkdown from "mui-markdown";
-// Import pdfmake for PDF generation
 import pdfMake from "pdfmake/build/pdfmake";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import React, { useEffect, useRef } from "react";
