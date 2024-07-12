@@ -1,6 +1,8 @@
 import "./stylesheets/Chat.css";
 
-import MarkdownIt from "markdown-it";
+import MuiMarkdown from "mui-markdown";
+import pdfMake from "pdfmake/build/pdfmake";
+import pdfFonts from "pdfmake/build/vfs_fonts";
 import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
@@ -11,7 +13,7 @@ import brandConfig from "./configs/brand";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
 
-const mdParser = new MarkdownIt();
+pdfMake.vfs = pdfFonts.pdfMake.vfs;
 
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
@@ -39,16 +41,27 @@ function Chat() {
     setConversation([]);
   };
 
-  const handleExportChat = async (): Promise<void> => {
-    const pdfMake = (await import("pdfmake/build/pdfmake")).default;
-    const pdfFonts = await import("pdfmake/build/vfs_fonts");
-    pdfMake.vfs = pdfFonts.pdfMake.vfs;
+  const handleExportChat = (): void => {
     const chatContent = conversation.map((msg) => ({
-      text: `User: ${msg.user}\nAssistant: ${msg.assistant}\n\n`,
+      user: `User: ${msg.user}\n`,
+      assistant: msg.assistant,
     }));
 
     const docDefinition = {
-      content: chatContent,
+      content: [
+        {
+          text: `${brandConfig.humanReadableAppName} Chat Export\n\n`,
+          style: "header",
+        },
+        ...chatContent.map((msg) => [
+          { text: msg.user, bold: true },
+          { text: msg.assistant, style: "assistantMessage" },
+        ]),
+      ],
+      styles: {
+        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+        assistantMessage: { margin: [0, 0, 0, 10] },
+      },
     };
 
     pdfMake
@@ -63,7 +76,7 @@ function Chat() {
   }, [conversation]);
 
   return (
-    <Paper square className="Chat">
+    <Paper square className="Chat" variant="outlined">
       <div className="Chat-Button">
         <Button
           variant="outlined"
@@ -81,19 +94,20 @@ function Chat() {
         </Button>
       </div>
 
-      <Paper className="Chat-Display" ref={chatDisplayRef} elevation={0}>
+      <Paper
+        className="Chat-Display"
+        ref={chatDisplayRef}
+        elevation={0}
+        variant="outlined"
+      >
         {conversation.map((msg, index) => (
           <Paper key={index} className="Message-Container" elevation={0}>
             <Paper className="User-Message" color="primary">
               {msg.user}
             </Paper>
-            <Paper
-              className="Assistant-Message"
-              color="success"
-              dangerouslySetInnerHTML={{
-                __html: mdParser.render(msg.assistant),
-              }}
-            />
+            <Paper className="Assistant-Message" color="success">
+              <MuiMarkdown>{msg.assistant}</MuiMarkdown>
+            </Paper>
           </Paper>
         ))}
       </Paper>
