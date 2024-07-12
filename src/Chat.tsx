@@ -1,7 +1,7 @@
 import "./stylesheets/Chat.css";
 
 import MuiMarkdown from "mui-markdown";
-import pdfMake from "pdfmake/build/pdfmake";
+import pdfMake from "pdfmake/build/pdfmake.js";
 import pdfFonts from "pdfmake/build/vfs_fonts";
 import React, { useEffect, useRef } from "react";
 
@@ -58,10 +58,6 @@ function Chat() {
           { text: msg.assistant, style: "assistantMessage" },
         ]),
       ],
-      styles: {
-        header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-        assistantMessage: { margin: [0, 0, 0, 10] },
-      },
     };
 
     pdfMake
