@@ -13,13 +13,13 @@ export default defineConfig({
   base: "/Llamate/",
   build: {
     rollupOptions: {
-      external: externalDependencies,
-      output: {
-        globals: {
-          "pdfmake/build/pdfmake": "pdfMake",
-          "pdfmake/build/vfs_fonts": "pdfFonts",
-        },
-      },
+      // external: externalDependencies,
+      // output: {
+      //   globals: {
+      //     "pdfmake/build/pdfmake": "pdfMake",
+      //     "pdfmake/build/vfs_fonts": "pdfFonts",
+      //   },
+      // },
     },
   },
 });
