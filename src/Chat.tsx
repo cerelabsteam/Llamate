@@ -5,13 +5,17 @@ import React, { useEffect, useRef } from "react";
 
 import DeleteSweepIcon from "@mui/icons-material/DeleteSweep";
 import FileDownloadIcon from "@mui/icons-material/FileDownload";
-import { Button, Paper } from "@mui/material";
+import MoreHorizIcon from "@mui/icons-material/MoreHoriz";
+import { Button, IconButton, Paper } from "@mui/material";
 
+import AssistantMenu from "./AssistantMenu";
 import InputWindow from "./InputWindow";
 import { Conversation, Message } from "./types/Chat";
 
 function Chat() {
   const [userInput, setUserInput] = React.useState<string>("");
+  const [anchorEl, setAnchorEl] = React.useState<null | HTMLElement>(null);
+  const open = Boolean(anchorEl);
   const [conversation, setConversation] = React.useState<Conversation>([]);
   const chatDisplayRef = useRef<HTMLDivElement>(null);
 
@@ -30,6 +34,13 @@ function Chat() {
     const conversationsClone = JSON.parse(JSON.stringify(conversation));
     setConversation([...conversationsClone, newMessage]);
     setUserInput("");
+  };
+
+  const handleClickAssistantMenu = (event: React.MouseEvent<HTMLElement>) => {
+    setAnchorEl(event.currentTarget);
+  };
+  const handleCloseAssistantMenu = () => {
+    setAnchorEl(null);
   };
 
   const handleClearChat = (): void => {
@@ -69,6 +80,19 @@ function Chat() {
               {msg.user}
             </Paper>
             <Paper className="Assistant-Message" color="success">
+              <IconButton
+                onClick={handleClickAssistantMenu}
+                color="primary"
+                className="More-Icon"
+              >
+                <MoreHorizIcon />
+              </IconButton>
+              <AssistantMenu
+                anchorEl={anchorEl}
+                open={open}
+                handleClose={handleCloseAssistantMenu}
+                value={msg.assistant}
+              />
               <MuiMarkdown>{msg.assistant}</MuiMarkdown>
             </Paper>
           </Paper>
