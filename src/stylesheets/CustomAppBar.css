@@ -8,9 +8,8 @@
   margin-left: auto;
   display: flex;
   flex-direction: row;
-  gap: 1px;
+  gap: 1rem;
 }
 .AppBar-Elements-Buttons {
   position: absolute;
-  right: 45px;
 }
